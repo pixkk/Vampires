@@ -1,0 +1,7 @@
+general:
+  seconds:
+    min: 60
+    max: 15
+  requirements:
+    min: 2
+    max: 16

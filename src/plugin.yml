@@ -1,0 +1,11 @@
+name: VampireZ
+main: com.tigerhix.vampirez.Main
+authors: [TigerHix, Repack by pixkk]
+version: 1.1.0
+description: Vampires and survivors. Who gonna win?
+depend: [ProtocolLib]
+api-version: 1.16
+commands:
+   vampire:
+      description: Vampire commands.
+      usage: /<command>
