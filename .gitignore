@@ -1,2 +1,8 @@
 # Project exclude paths
 /bin/
+/out/
+/logs/
+/.idea/
+/.settings/
+Vampirez.iml
+.classpath
