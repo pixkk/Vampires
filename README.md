@@ -4,7 +4,7 @@ Vampires - confrontation between humans and vampires. The goal of the vampires i
 Vampires - plugin, which created by **@TigerHix** and modified by **@pixkk** 
 
 ## Which version of minecraft server support this plugin?
-- Spigot Minecraft 1.16.5 (tested)
+- Spigot Minecraft 1.16 (tested 1.16.5)
 
 ## Screenshots
 <details>
@@ -312,3 +312,5 @@ signs:
 
 - transfer player stats in another file 
 - set seconds and count of players for each arena
+- fix arrow (find player)
+- add support for another versions of minecraft server
