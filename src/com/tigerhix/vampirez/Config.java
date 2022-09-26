@@ -23,9 +23,15 @@ public class Config
     
     public Config(final Main plugin) {
         Config.minPlayer = plugin.getConfig().getInt("general.requirements.min");
+        Config.maxPlayer = plugin.getConfig().getInt("general.requirements.max");
         if (Config.minPlayer < 2) {
             plugin.getConfig().set("general.requirements.min", (Object)2);
+//            plugin.getConfig().set("general.requirements.max", (Object)16);
+            plugin.saveConfig();
+        }
+        if (Config.maxPlayer < 2) {
             plugin.getConfig().set("general.requirements.max", (Object)16);
+//            plugin.getConfig().set("general.requirements.max", (Object)16);
             plugin.saveConfig();
         }
         if (Config.minSeconds <0 || Config.maxSeconds <0) {
@@ -33,7 +39,7 @@ public class Config
             plugin.getConfig().set("general.seconds.max", (Object)15);
             plugin.saveConfig();
         }
-        Config.maxPlayer = plugin.getConfig().getInt("general.requirements.max");
+
         Config.minSeconds = plugin.getConfig().getInt("general.seconds.min");
         Config.maxSeconds = plugin.getConfig().getInt("general.seconds.max");
         Config.signStyle = 2;
