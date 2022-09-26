@@ -115,6 +115,8 @@ public class Arena
 
 
                 for (final Gamer gamer : Arena.this.gamers) {
+                    if (gamer.getPlayer() == null) return;
+
                     String waveString;
                     if (Arena.this.wave == 0) {
                         waveString = ChatColor.GOLD + " " +plugin.message.get().get("get-ready")+"";

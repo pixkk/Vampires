@@ -1,5 +1,7 @@
 package com.tigerhix.vampirez;
 
+import net.minecraft.server.v1_16_R3.PacketPlayInClientCommand;
+import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.plugin.*;
 import org.bukkit.*;
 import org.bukkit.material.*;
@@ -118,7 +120,7 @@ public class Listeners implements Listener
         	return;
         }
     }
-    
+
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerDeath(final PlayerDeathEvent evt) {
         if (Utils.getGamer(evt.getEntity()) == null) {
@@ -141,7 +143,7 @@ public class Listeners implements Listener
             }
             else {
                 final Player killer = player.getKiller();
-                arena.broadcast(ChatColor.GREEN + "[VampireZ] " + ChatColor.RED + gamer.getDisplayName() + " "+  plugin.message.get().get("was-killed") +" " + killer.getDisplayName() + ". "+  plugin.message.get().get("gamers-left") +"" + arena.getSurvivors().size() + " "+  plugin.message.get().get("survivors-2") +"" + ((arena.getSurvivors().size() < 2) ? "" : "") );
+                arena.broadcast(ChatColor.GREEN + "[VampireZ] " + ChatColor.RED + gamer.getDisplayName() + " "+ ChatColor.RED + plugin.message.get().get("was-killed") +" " + killer.getDisplayName() + ". "+  plugin.message.get().get("gamers-left") + " " + arena.getSurvivors().size() + " "+  plugin.message.get().get("survivors-2") +"" + ((arena.getSurvivors().size() < 2) ? "" : "") );
                 Utils.getGamer(killer).ding();
                 Utils.getGamer(killer).addCash(15);
                 Utils.getGamer(killer).addCoins(5);
@@ -154,6 +156,7 @@ public class Listeners implements Listener
                     other.addCash(5);
                 }
             }
+
             if (arena.getSurvivors().size() == 0) {
                 Game.stop(arena);
             }
@@ -169,7 +172,10 @@ public class Listeners implements Listener
             Utils.getGamer(killer).addCoins(5);
             final Gamer gamer3 = Utils.getGamer(killer);
             ++gamer3.vampireKills;
+
         }
+
+        ((CraftPlayer)player).getHandle().playerConnection.a(new PacketPlayInClientCommand(PacketPlayInClientCommand.EnumClientCommand.PERFORM_RESPAWN));
     }
     
     @EventHandler(priority = EventPriority.MONITOR)
@@ -199,9 +205,9 @@ public class Listeners implements Listener
         final Arena arena = gamer.playing;
         evt.setRespawnLocation(arena.vampireSpawn);
         player.getInventory().clear();
-        if (!arena.status.equals("started")) {
-            return;
-        }
+//        if (!arena.status.equals("started")) {
+//            return;
+//        }
         if (gamer.transferring) {
             gamer.transferring = false;
             player.sendMessage(ChatColor.GREEN + "[VampireZ] " + ChatColor.RED + ""+   ChatColor.BOLD + ""+  plugin.message.get().get("became-vampire") +".");
