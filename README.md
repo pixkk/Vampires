@@ -207,7 +207,7 @@ follow-arrow: follow the arrow
 ### General
 ```
 general:
-  seconds: - Countdown to the start of the game 
+  seconds: (Countdown to the start of the game) 
     min: 60 (with a minimum number of players) 
     max: 15 (with a maximum number of players) 
   requirements:
