@@ -31,9 +31,6 @@ public class Commands implements CommandExecutor
                     return true;
 
                 }
-                else  {
-
-                }
             }
 
             sender.sendMessage(ChatColor.GREEN+"[VampireZ]"+ ChatColor.RED+" Только игроки могут выполнять данную комманду!");
