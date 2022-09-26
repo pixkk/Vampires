@@ -3,8 +3,8 @@ Vampires - confrontation between humans and vampires. The goal of the vampires i
 
 Vampires - plugin, which created by **@TigerHix** and modified by **@pixkk** 
 
-## Which version of minecraft support this plugin?
-Vampires tested on minecraft 1.16.5.
+## Which version of minecraft server support this plugin?
+- Minecraft 1.16.5 (spigot tested)
 
 ## Screenshots
 <details>
