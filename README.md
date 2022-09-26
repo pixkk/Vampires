@@ -75,7 +75,7 @@ no-leave: You can't leave the game now!
 too-many-arguments: Too many arguments! Use command
 lobby-created: Lobby successfully installed!
 plugin-reloaded: Plugin settings reloaded!
-unknown-command: 'Unknown team. List of all commands: /vampire help'
+unknown-command: 'Unknown command. List of all commands: /vampire help'
 gold-1: gold!
 gold-2: Gold!
 gold-3: Gold
