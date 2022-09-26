@@ -44,40 +44,42 @@ public class Main extends JavaPlugin
         this.sm = this.getServer().getScoreboardManager();
         this.messenger = new ItemMessage(this);
         this.message = new MessagesConfig();
-
-
-        Bukkit.getConsoleSender().sendMessage("Minimum seconds: " + this.getConfig().getInt("general.requirements.min")+ "\n");
-        Bukkit.getConsoleSender().sendMessage("Maximum seconds: " + this.getConfig().getInt("general.requirements.max")+ "\n");
-
         message.setup(this);
-        message.get();
-        message.reloadconf();
-        message.save();
-        
-        
-        this.getCommand("vampire").setExecutor(new Commands(this));
-        new Config(this);
-        new Game(this);
-        new Listeners(this);
-        new Utils(this);
-        new ItemTemplate();
-        for (final Player player : this.getServer().getOnlinePlayers()) {
-            this.gamers.put(player.getName(), new Gamer(this, player.getName()));
-        }
-        Bukkit.getConsoleSender().sendMessage("§cEnabled arenas:" + "\n");
-        int i = 1;
-        for (final String name : this.getConfig().getStringList("arenas.enabled-arenas")) {
-            this.arenas.put(name, new Arena(this, name));
-            Bukkit.getConsoleSender().sendMessage("§c" + i+". " +name+ "");
-            i++;
+//        Check if messages.yml is empty
+        if(!message.disable) {
+            Bukkit.getConsoleSender().sendMessage("Minimum seconds: " + this.getConfig().getInt("general.requirements.min")+ "\n");
+            Bukkit.getConsoleSender().sendMessage("Maximum seconds: " + this.getConfig().getInt("general.requirements.max")+ "\n");
+            message.get();
+            message.reloadconf();
+            message.save();
+
+
+            this.getCommand("vampire").setExecutor(new Commands(this));
+            new Config(this);
+            new Game(this);
+            new Listeners(this);
+            new Utils(this);
+            new ItemTemplate();
+            for (final Player player : this.getServer().getOnlinePlayers()) {
+                this.gamers.put(player.getName(), new Gamer(this, player.getName()));
+            }
+            Bukkit.getConsoleSender().sendMessage("§cEnabled arenas:" + "\n");
+            int i = 1;
+            for (final String name : this.getConfig().getStringList("arenas.enabled-arenas")) {
+                this.arenas.put(name, new Arena(this, name));
+                Bukkit.getConsoleSender().sendMessage("§c" + i+". " +name+ "");
+                i++;
+            }
+
+            for (final String str : this.getConfig().getStringList("signs")) {
+                final Sign sign = new Sign(this, this.arenas.get(str.split("@")[1]), Utils.stringToLocation(str.split("@")[0]).getBlock());
+                sign.startTimer();
+                this.signs.put(Utils.stringToLocation(str.split("@")[0]), sign);
+            }
+            Game.lobby = Utils.stringToLocation(this.getConfig().getString("general.lobby"));
         }
 
-        for (final String str : this.getConfig().getStringList("signs")) {
-        	final Sign sign = new Sign(this, this.arenas.get(str.split("@")[1]), Utils.stringToLocation(str.split("@")[0]).getBlock());
-            sign.startTimer();
-            this.signs.put(Utils.stringToLocation(str.split("@")[0]), sign);
-        }
-        Game.lobby = Utils.stringToLocation(this.getConfig().getString("general.lobby"));
+
     }
     public void onDisable() {
     	this.reloadConfig();
