@@ -251,7 +251,6 @@ signs:
     requirements:
       min: 2
       max: 16
-    lobby: Vampirezlobboy,-222.76588858395812,76.0,323.54242126793673,-281.5634,29.700142
   ```
 </details>
 <details>
