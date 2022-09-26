@@ -91,41 +91,41 @@ public class VampireShop implements Listener
                 public void run() {
                     gamer.getPlayer().closeInventory();
                     gamer.sendMessage(ChatColor.GREEN + "[VampireZ] " + ChatColor.GOLD + plugin.message.get().get("buy-in-shop-success"));
-//                    if (id == 0) {
-//                        if (gamer.flameArrowID != -1) {
-//                            VampireShop.this.plugin.getServer().getScheduler().cancelTask(gamer.flameArrowID);
-//                        }
-//                        gamer.sendMessage(ChatColor.RED + "[VampireZ] " + plugin.message.get().get("follow-arrow"));
-//                        final Player player = gamer.getPlayer();
-//                        final Location vampire = player.getLocation();
-//                        final Location survivor = gamer.getNearestSurvivor();
-//                        //final LocationIterator llllll = new LocationIterator(final World world, final org.bukkit.util.Vector vector, final Vector vector2, final double yOffset, final int maxDistance)
-//                        final LocationIterator locs = new LocationIterator(player.getWorld(), vampire.toVector(), new Vector(survivor.getBlockX() - vampire.getBlockX(),survivor.getBlockY() - vampire.getBlockY(), survivor.getBlockZ() - vampire.getBlockZ()), 0.0, (int)Math.floor(vampire.distance(survivor)));
-//                        final List<Location> places = new ArrayList<Location>();
-//                        for (int i = 1; i <= 10; ++i) {
-//                            try {
-//                                final Location loc = locs.next();
-//                                places.add(loc);
-//                            }
-//                            catch (NoSuchElementException e) {
-//                                break;
-//                            }
-//                        }
-//                        gamer.flameArrowID = VampireShop.this.plugin.getServer().getScheduler().scheduleSyncRepeatingTask((Plugin)VampireShop.this.plugin, (Runnable)new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                for (final Location loc : places) {
-//                                    player.getWorld().playEffect(loc, Effect.FIREWORK_SHOOT, 20);
-//                                }
-//                            }
-//                        }, 1L, 10L);
-//                        VampireShop.this.plugin.getServer().getScheduler().runTaskLater((Plugin)VampireShop.this.plugin, (Runnable)new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                VampireShop.this.plugin.getServer().getScheduler().cancelTask(gamer.flameArrowID);
-//                            }
-//                        }, 100L);
-//                    }
+                    if (id == 0) {
+                        if (gamer.flameArrowID != -1) {
+                            VampireShop.this.plugin.getServer().getScheduler().cancelTask(gamer.flameArrowID);
+                        }
+                        gamer.sendMessage(ChatColor.RED + "[VampireZ] " + plugin.message.get().get("follow-arrow"));
+                        final Player player = gamer.getPlayer();
+                        final Location vampire = player.getLocation();
+                        final Location survivor = gamer.getNearestSurvivor();
+                        //final LocationIterator llllll = new LocationIterator(final World world, final org.bukkit.util.Vector vector, final Vector vector2, final double yOffset, final int maxDistance)
+                        final LocationIterator locs = new LocationIterator(player.getWorld(), vampire.toVector(), new Vector(survivor.getBlockX() - vampire.getBlockX(),survivor.getBlockY() - vampire.getBlockY(), survivor.getBlockZ() - vampire.getBlockZ()), 0.0, (int)Math.floor(vampire.distance(survivor)));
+                        final List<Location> places = new ArrayList<Location>();
+                        for (int i = 1; i <= 10; ++i) {
+                            try {
+                                final Location loc = locs.next();
+                                places.add(loc);
+                            }
+                            catch (NoSuchElementException e) {
+                                break;
+                            }
+                        }
+                        gamer.flameArrowID = VampireShop.this.plugin.getServer().getScheduler().scheduleSyncRepeatingTask((Plugin)VampireShop.this.plugin, (Runnable)new Runnable() {
+                            @Override
+                            public void run() {
+                                for (final Location loc : places) {
+                                    player.getWorld().playEffect(loc, Effect.FIREWORK_SHOOT, 20);
+                                }
+                            }
+                        }, 1L, 10L);
+                        VampireShop.this.plugin.getServer().getScheduler().runTaskLater((Plugin)VampireShop.this.plugin, (Runnable)new Runnable() {
+                            @Override
+                            public void run() {
+                                VampireShop.this.plugin.getServer().getScheduler().cancelTask(gamer.flameArrowID);
+                            }
+                        }, 100L);
+                    }
                      if (id == 1) {
                         gamer.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 600, 2));
                     }
