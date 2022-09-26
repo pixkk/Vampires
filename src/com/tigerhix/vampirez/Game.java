@@ -5,13 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Effect;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -73,6 +67,9 @@ public class Game
     }
     
     public static void join(final Arena arena, final Gamer gamer) {
+
+
+
         arena.gamers.add(gamer);
         
         namearena = arena.name;
@@ -82,7 +79,10 @@ public class Game
         Game.plugin.inventories.put(player.getName(), player.getInventory().getContents());
         player.getInventory().clear();
         Utils.updateInventoryLater(player);
-        
+        World worldName = player.getLocation().getWorld();
+        worldName.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
+        worldName.setGameRule(GameRule.SHOW_DEATH_MESSAGES, false);
+
         player.getInventory().setItem(8, ItemTemplate.SLIME_BALL.getItem());
         player.setExp(0.0f);
         player.setLevel(0);
@@ -106,10 +106,10 @@ public class Game
         final Arena arena = gamer.playing;
         arena.gamers.remove(gamer);
         if (reason.equals(Reason.INITIATIVE)) {
-            arena.broadcastOthers(ChatColor.GREEN+"[VampireZ] "+ ChatColor.GOLD + plugin.message.get().get("player") +" " + gamer.name + " "+ plugin.message.get().get("left-the-game") +" " +" (" + arena.gamers.size() + "/" + Config.maxPlayer + ")", gamer);
+            arena.broadcastOthers(ChatColor.GREEN+"[VampireZ] "+ ChatColor.GOLD + plugin.message.get().get("player") + ChatColor.GOLD + " " + gamer.name + " "+ plugin.message.get().get("left-the-game") +" " +" (" + arena.gamers.size() + "/" + Config.maxPlayer + ")", gamer);
         }
         if (reason.equals(Reason.OPERATOR)) {
-            arena.broadcastOthers(ChatColor.GREEN+"[VampireZ] "+ ChatColor.GOLD + plugin.message.get().get("player") +" " + gamer.name + " "+plugin.message.get().get("was-kicked") +" (" + arena.gamers.size() + "/" + Config.maxPlayer + ")", gamer);
+            arena.broadcastOthers(ChatColor.GREEN+"[VampireZ] "+ ChatColor.GOLD + plugin.message.get().get("player") + ChatColor.GOLD + " " + gamer.name + " "+plugin.message.get().get("was-kicked") +" (" + arena.gamers.size() + "/" + Config.maxPlayer + ")", gamer);
         }
         
         gamer.reset();
@@ -124,7 +124,12 @@ public class Game
         player.setHealth(20.0);
         player.setGameMode(GameMode.ADVENTURE);
         player.setAllowFlight(false);
-        
+
+
+        World worldName = player.getLocation().getWorld();
+        worldName.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, false);
+        worldName.setGameRule(GameRule.SHOW_DEATH_MESSAGES, true);
+
         player.teleport((Game.lobby == null) ? Bukkit.getWorlds().get(0).getSpawnLocation() : Game.lobby);
         for (final PotionEffect effect : player.getActivePotionEffects()) {
             player.removePotionEffect(effect.getType());
@@ -180,6 +185,7 @@ public class Game
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void start(final Arena arena) {
+
         arena.status = "started";
         arena.startTimer();
         final int randomIndex = (arena.gamers.size() == 1) ? 0 : Game.random.nextInt(arena.gamers.size() - 1);
