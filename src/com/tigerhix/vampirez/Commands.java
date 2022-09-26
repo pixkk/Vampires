@@ -33,19 +33,19 @@ public class Commands implements CommandExecutor
                 }
             }
 
-            sender.sendMessage(ChatColor.GREEN+"[VampireZ]"+ ChatColor.RED+" Только игроки могут выполнять данную комманду!");
+            sender.sendMessage(ChatColor.GREEN+"[VampireZ]"+ ChatColor.RED+" Only players can use this command!");
             return true;
         }
         final Player player = (Player)sender;
         if (args.length == 0) {
-            player.sendMessage(ChatColor.GREEN+"[VampireZ]"+ ChatColor.GOLD+" Плагин VampireZ разработан TigerHix,\nАдаптировал и модифицировал Pixkk.\nВерсия 1.1.0.");
+            player.sendMessage(ChatColor.GREEN+"[VampireZ]"+ ChatColor.GOLD+" Plugin was developed by TigerHix,\nmodified by Pixkk.\n");
             return true;
         }
         if (args.length > 0) {
             final String action = args[0];
             if (action.equalsIgnoreCase("help")) {
                 if (args.length != 1) {
-                    player.sendMessage(ChatColor.RED + "* Too many arguments. Usage: /vampire help");
+                    player.sendMessage(ChatColor.RED + "" + plugin.message.get().get("too-many-arguments") + ": /vampire help");
                     return true;
                 }
                 player.sendMessage(ChatColor.GREEN +"[VampireZ]"+ ChatColor.AQUA + " "+ plugin.message.get().get("available-commands") +":");
