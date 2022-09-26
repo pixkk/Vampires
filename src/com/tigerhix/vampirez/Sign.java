@@ -34,15 +34,11 @@ public class Sign implements Listener
         }
         
         this.block = block;
-
-        Bukkit.getConsoleSender().sendMessage("§cBlcok:" + block.toString());
-        Bukkit.getConsoleSender().sendMessage("§cBlcok:" + this.block.toString());
         this.sign = (org.bukkit.block.Sign)block.getState();
         this.ID = 0;
     }
     
     public void save(final Boolean remove) {
-        Bukkit.getConsoleSender().sendMessage("§cGetConfig:" + Listeners.plugin.getConfig().toString());
         final List<String> signs = (List<String>)Listeners.plugin.getConfig().getStringList("signs");
         if (!remove) {
             signs.add(Utils.locationToString(this.block.getLocation()) + "@" + this.arena.name);
