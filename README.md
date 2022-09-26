@@ -314,3 +314,4 @@ signs:
 - set seconds and count of players for each arena
 - fix arrow (find player)
 - add support for another versions of minecraft server
+- manual changing cost of items in shop
