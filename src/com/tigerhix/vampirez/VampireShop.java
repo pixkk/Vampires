@@ -25,12 +25,12 @@ public class VampireShop implements Listener
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents((Listener)this, (Plugin)plugin);
         this.name = ""+plugin.message.get().get("shop");
-        (this.items = new ArrayList<Item>()).add(new Item(new ItemStack(Material.FIRE), null, "§c§l"+plugin.message.get().get("flaming-arrow")+"", ""+plugin.message.get().get("flaming-arrow-desc"), 1));
-        this.items.add(new Item(new ItemStack(Material.REDSTONE_BLOCK), null, "§4§l"+plugin.message.get().get("vampire-regeneration")+"", ""+plugin.message.get().get("vampire-regeneration-desc"), 3));
-        this.items.add(new Item(new ItemStack(Material.REDSTONE_ORE), null, "§6§l"+plugin.message.get().get("instant-health")+"", ""+plugin.message.get().get("instant-health-desc"), 5));
-        this.items.add(new Item(new ItemStack(Material.BEACON), null, "§f§l"+plugin.message.get().get("vampire-aura")+"", ""+plugin.message.get().get("vampire-aura-desc"), 10));
-        this.items.add(new Item(new ItemStack(Material.FEATHER), null, "§b§l"+plugin.message.get().get("vampire-jump")+"", ""+plugin.message.get().get("vampire-jump-desc"), 10));
-        this.items.add(new Item(new ItemStack(Material.SPONGE), null, "§c§l"+plugin.message.get().get("health-boost")+"", ""+plugin.message.get().get("health-boost-desc"), 10));
+        (this.items = new ArrayList<Item>()).add(new Item(new ItemStack(Material.BLAZE_POWDER), null, "§c§l"+plugin.message.get().get("flaming-arrow")+"", ""+plugin.message.get().get("flaming-arrow-desc"), 5));
+        this.items.add(new Item(new ItemStack(Material.REDSTONE_BLOCK), null, "§4§l"+plugin.message.get().get("vampire-regeneration")+"", ""+plugin.message.get().get("vampire-regeneration-desc"), 10));
+        this.items.add(new Item(new ItemStack(Material.REDSTONE_ORE), null, "§6§l"+plugin.message.get().get("instant-health")+"", ""+plugin.message.get().get("instant-health-desc"), 15));
+        this.items.add(new Item(new ItemStack(Material.BEACON), null, "§f§l"+plugin.message.get().get("vampire-aura")+"", ""+plugin.message.get().get("vampire-aura-desc"), 50));
+        this.items.add(new Item(new ItemStack(Material.FEATHER), null, "§b§l"+plugin.message.get().get("vampire-jump")+"", ""+plugin.message.get().get("vampire-jump-desc"), 30));
+        this.items.add(new Item(new ItemStack(Material.SPONGE), null, "§c§l"+plugin.message.get().get("health-boost")+"", ""+plugin.message.get().get("health-boost-desc"), 30));
     }
     
     public void open(final Player player) {
@@ -100,7 +100,7 @@ public class VampireShop implements Listener
                         final Location vampire = player.getLocation();
                         final Location survivor = gamer.getNearestSurvivor();
                         //final LocationIterator llllll = new LocationIterator(final World world, final org.bukkit.util.Vector vector, final Vector vector2, final double yOffset, final int maxDistance)
-                        final LocationIterator locs = new LocationIterator(player.getWorld(), vampire.toVector(), new Vector(survivor.getBlockX() - vampire.getBlockX(),survivor.getBlockY() - vampire.getBlockY(), survivor.getBlockZ() - vampire.getBlockZ()), 0.0, (int)Math.floor(vampire.distance(survivor)));
+                        final LocationIterator locs = new LocationIterator(player.getWorld(), survivor.toVector(), new Vector(survivor.getBlockX() - vampire.getBlockX(),survivor.getBlockY() - vampire.getBlockY(), survivor.getBlockZ() - vampire.getBlockZ()), 0.0, (int)Math.floor(vampire.distance(survivor)));
                         final List<Location> places = new ArrayList<Location>();
                         for (int i = 1; i <= 10; ++i) {
                             try {
