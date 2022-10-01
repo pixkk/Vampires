@@ -1,6 +1,7 @@
 package com.tigerhix.vampirez;
 
 import net.minecraft.server.v1_16_R3.PacketPlayInClientCommand;
+import org.apache.commons.lang.ObjectUtils;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.plugin.*;
 import org.bukkit.*;
@@ -18,7 +19,8 @@ import org.bukkit.event.player.*;
 public class Listeners implements Listener
 {
     public static Main plugin;
-    
+    public static Arena arena;
+
     public Listeners(final Main plugin) {
         Listeners.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents((Listener)this, (Plugin)plugin);
@@ -80,6 +82,35 @@ public class Listeners implements Listener
         if (Utils.getGamer(evt.getPlayer()) != null && Utils.getGamer(evt.getPlayer()).playing != null) {
             Game.leave(Utils.getGamer(evt.getPlayer()), Reason.INITIATIVE);
         }
+    }
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerChat(final AsyncPlayerChatEvent evt) {
+        final Player player = evt.getPlayer();
+        final Gamer gamer = Utils.getGamer(player);
+        final Arena arena = gamer.playing;
+
+        try {
+            if(arena == null){
+                evt.setFormat(evt.getFormat());
+            }
+            else {
+                if (Objects.equals(arena.status, "waiting")) {
+                    evt.setFormat(evt.getFormat());
+                }
+                else {
+                    if (gamer.alive) {
+                        evt.setFormat(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "[Alive] " + ChatColor.RESET + evt.getFormat());
+                    }
+                    else {
+                        evt.setFormat(ChatColor.RED + "" + ChatColor.BOLD + "[Vampire] " + ChatColor.RESET + evt.getFormat());
+                    }
+                }
+
+            }
+        }catch (NullPointerException ignored) {
+            evt.setFormat(evt.getFormat());
+        }
+
     }
     
     @SuppressWarnings("deprecation")
