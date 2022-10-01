@@ -1,10 +1,5 @@
 package com.tigerhix.vampirez;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
-
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -13,11 +8,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Score;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.*;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
 
 
 public class Game
@@ -26,7 +22,7 @@ public class Game
     public static Random random;
     public static Location lobby;
     public static String namearena;
-    
+
     public Game(final Main plugin) {
         Game.plugin = plugin;
         Game.random = new Random();
@@ -103,6 +99,7 @@ public class Game
     
     
     public static void leave(final Gamer gamer, final String reason) {
+
         final Arena arena = gamer.playing;
         arena.gamers.remove(gamer);
         if (reason.equals(Reason.INITIATIVE)) {
@@ -114,6 +111,7 @@ public class Game
         
         gamer.reset();
         final Player player = gamer.getPlayer();
+
         player.setScoreboard(Game.plugin.sm.getNewScoreboard());
         player.getInventory().clear();
         player.getInventory().setContents((ItemStack[])Game.plugin.inventories.get(player.getName()));
@@ -209,7 +207,7 @@ public class Game
             }
             else {
                 gamer.sendMessage(ChatColor.GREEN+"[VampireZ] " + ChatColor.RED + ChatColor.BOLD + plugin.message.get().get("you-are-alive"));
-                gamer.addCash(25);
+                gamer.addCash(10);
                 player.teleport(arena.survivorSpawn);
                 player.getInventory().setItem(0, ItemTemplate.WOOD_SWORD.getItem());
                 player.addPotionEffects((Collection)Config.survivorEffects);
@@ -320,6 +318,7 @@ public class Game
     }
     
     public static void stop(final Arena arena) {
+
         arena.status = "finished";
         arena.stopTimer();
         arena.broadcast(ChatColor.GREEN+"[VampireZ] " +ChatColor.GOLD + ""+ plugin.message.get().get("game-over")+" " + arena.getWinningTeam().substring(0, 1).toUpperCase() + arena.getWinningTeam().substring(1) + " "+ plugin.message.get().get("won")+"");
