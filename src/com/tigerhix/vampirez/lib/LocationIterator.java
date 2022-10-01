@@ -28,26 +28,26 @@ public class LocationIterator implements Iterator<Location>
         this.locationQueue = new Location[3];
         this.currentLocation = 0;
         this.currentDistance = 0;
-        final Object startClone = vector.clone();
-        ((Vector) startClone).setY(((Vector) startClone).getY() + yOffset);
+        final Vector startClone = vector.clone();
+        startClone.setY(startClone.getY() + yOffset);
         this.currentDistance = 0;
-        final Location startLocation = new Location(world, (double)(int)Math.floor(((Location) startClone).getX()), (double)(int)Math.floor(((Location) startClone).getY()), (double)(int)Math.floor(((Location) startClone).getZ()));
+        final Location startLocation = new Location(world, (int)Math.floor(startClone.getX()), (int)Math.floor(startClone.getY()), (int)Math.floor(startClone.getZ()));
         this.mainFace = this.getXFace(vector2);
         double mainDirection = this.getXLength(vector2);
         double mainPosition = this.getXPosition(vector2, startClone, startLocation);
         this.secondFace = this.getYFace(vector2);
         double secondDirection = this.getYLength(vector2);
-        double secondPosition = this.getYPosition(vector2, (Vector) startClone, startLocation);
+        double secondPosition = this.getYPosition(vector2, startClone, startLocation);
         this.thirdFace = this.getZFace(vector2);
         double thirdDirection = this.getZLength(vector2);
-        double thirdPosition = this.getZPosition(vector2, (Vector) startClone, startLocation);
+        double thirdPosition = this.getZPosition(vector2, startClone, startLocation);
         if (this.getYLength(vector2) > mainDirection) {
             this.mainFace = this.getYFace(vector2);
             mainDirection = this.getYLength(vector2);
-            mainPosition = this.getYPosition(vector2, (Vector) startClone, startLocation);
+            mainPosition = this.getYPosition(vector2, startClone, startLocation);
             this.secondFace = this.getZFace(vector2);
             secondDirection = this.getZLength(vector2);
-            secondPosition = this.getZPosition(vector2, (Vector) startClone, startLocation);
+            secondPosition = this.getZPosition(vector2, startClone, startLocation);
             this.thirdFace = this.getXFace(vector2);
             thirdDirection = this.getXLength(vector2);
             thirdPosition = this.getXPosition(vector2, startClone, startLocation);
@@ -55,13 +55,13 @@ public class LocationIterator implements Iterator<Location>
         if (this.getZLength(vector2) > mainDirection) {
             this.mainFace = this.getZFace(vector2);
             mainDirection = this.getZLength(vector2);
-            mainPosition = this.getZPosition(vector2, (Vector) startClone, startLocation);
+            mainPosition = this.getZPosition(vector2, startClone, startLocation);
             this.secondFace = this.getXFace(vector2);
             secondDirection = this.getXLength(vector2);
             secondPosition = this.getXPosition(vector2, startClone, startLocation);
             this.thirdFace = this.getYFace(vector2);
             thirdDirection = this.getYLength(vector2);
-            thirdPosition = this.getYPosition(vector2, (Vector) startClone, startLocation);
+            thirdPosition = this.getYPosition(vector2, startClone, startLocation);
         }
         final double d = mainPosition / mainDirection;
         final double secondd = secondPosition - secondDirection * d;
@@ -110,25 +110,25 @@ public class LocationIterator implements Iterator<Location>
     
     private BlockFace reverseFace(final BlockFace face) {
         switch (face) {
-            case UP: {
+            case UP -> {
                 return BlockFace.DOWN;
             }
-            case DOWN: {
+            case DOWN -> {
                 return BlockFace.UP;
             }
-            case NORTH: {
+            case NORTH -> {
                 return BlockFace.SOUTH;
             }
-            case SOUTH: {
+            case SOUTH -> {
                 return BlockFace.NORTH;
             }
-            case EAST: {
+            case EAST -> {
                 return BlockFace.WEST;
             }
-            case WEST: {
+            case WEST -> {
                 return BlockFace.EAST;
             }
-            default: {
+            default -> {
                 return null;
             }
         }
@@ -212,25 +212,25 @@ public class LocationIterator implements Iterator<Location>
     
     public Location getRelativeLocation(final Location location, final BlockFace face) {
         switch (face) {
-            case UP: {
+            case UP -> {
                 return location.clone().add(0.0, 1.0, 0.0);
             }
-            case DOWN: {
+            case DOWN -> {
                 return location.clone().add(0.0, -1.0, 0.0);
             }
-            case NORTH: {
+            case NORTH -> {
                 return location.clone().add(-1.0, 0.0, 0.0);
             }
-            case SOUTH: {
+            case SOUTH -> {
                 return location.clone().add(1.0, 0.0, 0.0);
             }
-            case EAST: {
+            case EAST -> {
                 return location.clone().add(0.0, 0.0, -1.0);
             }
-            case WEST: {
+            case WEST -> {
                 return location.clone().add(0.0, 0.0, 1.0);
             }
-            default: {
+            default -> {
                 return null;
             }
         }
