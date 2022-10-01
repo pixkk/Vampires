@@ -4,7 +4,7 @@ Vampires - confrontation between humans and vampires. The goal of the vampires i
 Vampires - plugin, which created by **@TigerHix** and modified by **@pixkk** 
 
 ## Which version of minecraft server support this plugin?
-- Spigot Minecraft 1.16.5 (tested)
+- Spigot Minecraft 1.16 (tested 1.16.5)
 
 ## Screenshots
 <details>
@@ -207,7 +207,7 @@ follow-arrow: follow the arrow
 ### General
 ```
 general:
-  seconds: - Countdown to the start of the game 
+  seconds: (Countdown to the start of the game) 
     min: 60 (with a minimum number of players) 
     max: 15 (with a maximum number of players) 
   requirements:
@@ -312,3 +312,6 @@ signs:
 
 - transfer player stats in another file 
 - set seconds and count of players for each arena
+- fix arrow (find player)
+- add support for another versions of minecraft server
+- manual changing cost of items in shop
