@@ -122,6 +122,10 @@ public class Sign implements Listener
             evt.getPlayer().sendMessage(ChatColor.GREEN+"[VampireZ] " +ChatColor.RED + plugin.message.get().get("arena-is-full"));
             return;
         }
-        Game.join(this.arena, Utils.getGamer(evt.getPlayer()));
+        try {
+            Game.join(this.arena, Utils.getGamer(evt.getPlayer()));
+        } catch (NullPointerException ignored) {
+
+        }
     }
 }
