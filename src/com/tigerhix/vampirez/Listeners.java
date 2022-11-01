@@ -113,16 +113,16 @@ public class Listeners implements Listener
 
     }
     
-    @SuppressWarnings("deprecation")
-	@EventHandler
-    public void onLampOff(final BlockRedstoneEvent evt) {
-        for (final Sign sign : Listeners.plugin.signs.values()) {
-            final Block notifier = sign.block.getRelative(BlockFace.UP).getRelative(((Directional)sign.block.getType().getNewData(sign.block.getData())).getFacing().getOppositeFace());
-            if (notifier.getLocation().getBlockX() == evt.getBlock().getLocation().getBlockX() && notifier.getLocation().getBlockY() == evt.getBlock().getLocation().getBlockY() && notifier.getLocation().getBlockZ() == evt.getBlock().getLocation().getBlockZ()) {
-                evt.setNewCurrent(5);
-            }
-        }
-    }
+//    @SuppressWarnings("deprecation")
+//	@EventHandler
+//    public void onLampOff(final BlockRedstoneEvent evt) {
+//        for (final Sign sign : Listeners.plugin.signs.values()) {
+//            final Block notifier = sign.block.getRelative(BlockFace.UP).getRelative(((Directional)sign.block.getType().getNewData(sign.block.getData())).getFacing().getOppositeFace());
+//            if (notifier.getLocation().getBlockX() == evt.getBlock().getLocation().getBlockX() && notifier.getLocation().getBlockY() == evt.getBlock().getLocation().getBlockY() && notifier.getLocation().getBlockZ() == evt.getBlock().getLocation().getBlockZ()) {
+//                evt.setNewCurrent(5);
+//            }
+//        }
+//    }
     
     @EventHandler
     public void onRightClickShop(final PlayerInteractEvent evt) {
@@ -381,20 +381,20 @@ public class Listeners implements Listener
         }
     }
     
-    @SuppressWarnings("deprecation")
-	@EventHandler
-    public void onStep(final PlayerInteractEvent evt) {
-        if (Utils.getGamer(evt.getPlayer()) == null) {
-            return;
-        }
-        if (Utils.getGamer(evt.getPlayer()).playing == null) {
-            return;
-        }
-        if (evt.getAction() != Action.PHYSICAL || evt.getClickedBlock().getType() != Material.LEGACY_SOIL) {
-            return;
-        }
-        evt.setCancelled(true);
-    }
+//    @SuppressWarnings("deprecation")
+//	@EventHandler
+//    public void onStep(final PlayerInteractEvent evt) {
+//        if (Utils.getGamer(evt.getPlayer()) == null) {
+//            return;
+//        }
+//        if (Utils.getGamer(evt.getPlayer()).playing == null) {
+//            return;
+//        }
+//        if (evt.getAction() != Action.PHYSICAL || evt.getClickedBlock().getType() != Material.LEGACY_SOIL) {
+//            return;
+//        }
+//        evt.setCancelled(true);
+//    }
     
     @EventHandler
     public void onPlaceBlock(final BlockPlaceEvent evt) {

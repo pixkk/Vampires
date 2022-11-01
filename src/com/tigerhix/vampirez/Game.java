@@ -15,6 +15,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
+import static com.tigerhix.vampirez.Reason.INITIATIVE;
+
 
 public class Game
 {
@@ -72,28 +74,34 @@ public class Game
         arena.broadcast(ChatColor.GREEN+"[VampireZ] "+ ChatColor.GOLD + gamer.name + " "+plugin.message.get().get("joined") +" (" + arena.gamers.size() + "/" + Config.maxPlayer + ")");
         gamer.playing = arena;
         final Player player = gamer.getPlayer();
-        Game.plugin.inventories.put(player.getName(), player.getInventory().getContents());
-        player.getInventory().clear();
-        Utils.updateInventoryLater(player);
-        World worldName = player.getLocation().getWorld();
-        worldName.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
-        worldName.setGameRule(GameRule.SHOW_DEATH_MESSAGES, false);
+        try {
+            player.teleport(arena.lobbySpawn);
+            Game.plugin.inventories.put(player.getName(), player.getInventory().getContents());
+            player.getInventory().clear();
+            Utils.updateInventoryLater(player);
+            World worldName = player.getLocation().getWorld();
+            worldName.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
+            worldName.setGameRule(GameRule.SHOW_DEATH_MESSAGES, false);
 
-        player.getInventory().setItem(8, ItemTemplate.SLIME_BALL.getItem());
-        player.setExp(0.0f);
-        player.setLevel(0);
-        player.setGameMode(GameMode.ADVENTURE);
-        player.setAllowFlight(false);
-        player.teleport(arena.lobbySpawn);
-        
-        scoreboardgame(Bukkit.getScoreboardManager(), gamer.getPlayer(), arena, arena.gamers.size());
+            player.getInventory().setItem(8, ItemTemplate.SLIME_BALL.getItem());
+            player.setExp(0.0f);
+            player.setLevel(0);
+            player.setGameMode(GameMode.ADVENTURE);
+            player.setAllowFlight(false);
 
-        player.sendMessage(ChatColor.GREEN+"[VampireZ] "+ ChatColor.GOLD +  ""+plugin.message.get().get("you-are-joined") +" "+plugin.message.get().get("map-name") +" "+ChatColor.GREEN+ "\""+ namearena+"\"");
-        if (arena.gamers.size() == Config.minPlayer) {
-            ready(arena, Config.minSeconds);
-        }
-        if (arena.gamers.size() == Config.maxPlayer) {
-            ready(arena, Config.maxSeconds);
+
+
+            scoreboardgame(Bukkit.getScoreboardManager(), gamer.getPlayer(), arena, arena.gamers.size());
+
+            player.sendMessage(ChatColor.GREEN+"[VampireZ] "+ ChatColor.GOLD +  ""+plugin.message.get().get("you-are-joined") +" "+plugin.message.get().get("map-name") +" "+ChatColor.GREEN+ "\""+ namearena+"\"");
+            if (arena.gamers.size() == Config.minPlayer) {
+                ready(arena, Config.minSeconds);
+            }
+            if (arena.gamers.size() == Config.maxPlayer) {
+                ready(arena, Config.maxSeconds);
+            }
+        }catch (IllegalArgumentException e) {
+            leave(gamer, INITIATIVE);
         }
     }
     
@@ -102,7 +110,7 @@ public class Game
 
         final Arena arena = gamer.playing;
         arena.gamers.remove(gamer);
-        if (reason.equals(Reason.INITIATIVE)) {
+        if (reason.equals(INITIATIVE)) {
             arena.broadcastOthers(ChatColor.GREEN+"[VampireZ] "+ ChatColor.GOLD + plugin.message.get().get("player") + ChatColor.GOLD + " " + gamer.name + " "+ plugin.message.get().get("left-the-game") +" " +" (" + arena.gamers.size() + "/" + Config.maxPlayer + ")", gamer);
         }
         if (reason.equals(Reason.OPERATOR)) {
