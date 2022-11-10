@@ -1,7 +1,7 @@
 name: VampireZ
 main: com.tigerhix.vampirez.Main
 authors: [TigerHix, Repack by pixkk]
-version: 2.1.1
+version: 3.0.1
 description: Vampires and survivors. Who gonna win?
 depend: [ProtocolLib]
 api-version: 1.16

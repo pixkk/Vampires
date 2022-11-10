@@ -45,8 +45,11 @@ public class Main extends JavaPlugin
         this.messenger = new ItemMessage(this);
         this.message = new MessagesConfig();
         message.setup(this);
+        String version_server = Utils.getServerVersion();
+        Bukkit.getConsoleSender().sendMessage("§cDetected server version: " + version_server);
 //        Check if messages.yml is empty
-        if(!message.disable) {
+
+        if(!message.disabled) {
             Bukkit.getConsoleSender().sendMessage("Minimum seconds: " + this.getConfig().getInt("general.requirements.min")+ "\n");
             Bukkit.getConsoleSender().sendMessage("Maximum seconds: " + this.getConfig().getInt("general.requirements.max")+ "\n");
             message.get();

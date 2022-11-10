@@ -14,7 +14,11 @@ public class Utils
         Utils.plugin = plugin;
         Utils.random = new Random();
     }
-    
+
+    public static String getServerVersion() {
+        return Bukkit.getServer().getBukkitVersion().split("-")[0];
+    }
+
     public static Arena getArena(final String arena) {
         return Utils.plugin.arenas.containsKey(arena) ? Utils.plugin.arenas.get(arena) : null;
     }
