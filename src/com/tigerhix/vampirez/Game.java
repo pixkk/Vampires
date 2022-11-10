@@ -82,6 +82,7 @@ public class Game
             World worldName = player.getLocation().getWorld();
             worldName.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
             worldName.setGameRule(GameRule.SHOW_DEATH_MESSAGES, false);
+            worldName.setDifficulty(Difficulty.PEACEFUL);
 
             player.getInventory().setItem(8, ItemTemplate.SLIME_BALL.getItem());
             player.setExp(0.0f);
@@ -100,6 +101,8 @@ public class Game
             if (arena.gamers.size() == Config.maxPlayer) {
                 ready(arena, Config.maxSeconds);
             }
+
+
         }catch (IllegalArgumentException e) {
             leave(gamer, INITIATIVE);
         }
@@ -135,6 +138,7 @@ public class Game
         World worldName = player.getLocation().getWorld();
         worldName.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, false);
         worldName.setGameRule(GameRule.SHOW_DEATH_MESSAGES, true);
+        worldName.setDifficulty(Difficulty.PEACEFUL);
 
         player.teleport((Game.lobby == null) ? Bukkit.getWorlds().get(0).getSpawnLocation() : Game.lobby);
         for (final PotionEffect effect : player.getActivePotionEffects()) {
@@ -212,6 +216,7 @@ public class Game
                 player.addPotionEffects((Collection)Config.vampireEffects);
                 player.getInventory().setHelmet(ItemTemplate.VAMPIRE_HEAD.getItem());
                 player.getInventory().setChestplate(ItemTemplate.VAMPIRE_CLOTH.getItem());
+                player.setFoodLevel(20);
             }
             else {
                 gamer.sendMessage(ChatColor.GREEN+"[VampireZ] " + ChatColor.RED + ChatColor.BOLD + plugin.message.get().get("you-are-alive"));
@@ -219,7 +224,9 @@ public class Game
                 player.teleport(arena.survivorSpawn);
                 player.getInventory().setItem(0, ItemTemplate.WOOD_SWORD.getItem());
                 player.addPotionEffects((Collection)Config.survivorEffects);
+                player.setFoodLevel(20);
             }
+            player.getWorld().setDifficulty(Difficulty.HARD);
         }
         arena.timeLeft = 30;
         arena.broadcast(ChatColor.GREEN+"[VampireZ] " + ChatColor.GOLD + plugin.message.get().get("first-wave"));
