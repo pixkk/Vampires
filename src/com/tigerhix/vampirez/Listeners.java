@@ -1,29 +1,42 @@
 package com.tigerhix.vampirez;
 
-import net.minecraft.server.v1_16_R3.PacketPlayInClientCommand;
-import org.apache.commons.lang.ObjectUtils;
-import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
-import org.bukkit.plugin.*;
-import org.bukkit.*;
-import org.bukkit.material.*;
-import org.bukkit.block.*;
-import org.bukkit.event.*;
-import org.bukkit.potion.*;
-import java.util.*;
-import org.bukkit.entity.*;
-import org.bukkit.event.block.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Zombie;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.*;
-import org.bukkit.event.inventory.*;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
+
+import java.util.Collection;
+import java.util.Objects;
 
 public class Listeners implements Listener
 {
+
+
     public static Main plugin;
     public static Arena arena;
+    public static String server_version;
+
 
     public Listeners(final Main plugin) {
         Listeners.plugin = plugin;
+        Listeners.server_version = Utils.getServerVersion();
         plugin.getServer().getPluginManager().registerEvents((Listener)this, (Plugin)plugin);
+
+
     }
     
     @EventHandler
@@ -152,6 +165,7 @@ public class Listeners implements Listener
         }
     }
 
+
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerDeath(final PlayerDeathEvent evt) {
         if (Utils.getGamer(evt.getEntity()) == null) {
@@ -206,7 +220,23 @@ public class Listeners implements Listener
 
         }
 
-        ((CraftPlayer)player).getHandle().playerConnection.a(new PacketPlayInClientCommand(PacketPlayInClientCommand.EnumClientCommand.PERFORM_RESPAWN));
+        try {
+            if(server_version.equals("1.16.5")) {
+                ((org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer)player).getHandle().playerConnection.a(new net.minecraft.server.v1_16_R3.PacketPlayInClientCommand(net.minecraft.server.v1_16_R3.PacketPlayInClientCommand.EnumClientCommand.PERFORM_RESPAWN));
+            }
+            else if (server_version.equals("1.17")) {
+//                EnumClientCommand.a where a - PERFORM_RESPAWN, b - REQUEST_STATS
+                ((org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer)player).getHandle().b.a(new net.minecraft.network.protocol.game.PacketPlayInClientCommand(net.minecraft.network.protocol.game.PacketPlayInClientCommand.EnumClientCommand.a));
+            }
+            else {
+                evt.getEntity().spigot().respawn();
+            }
+
+        }catch (NoClassDefFoundError e) {
+            Bukkit.getConsoleSender().sendMessage("&eWarning! This version of minecraft server does not support autorespawn. " +
+                    "Check updates for the plugin.");
+        }
+
     }
     
     @EventHandler(priority = EventPriority.MONITOR)
@@ -429,7 +459,9 @@ public class Listeners implements Listener
         if (Utils.getGamer((Player)evt.getEntity()).playing == null) {
             return;
         }
-        evt.setFoodLevel(20);
+        if (!Utils.getGamer((Player)evt.getEntity()).alive) {
+            evt.setFoodLevel(20);
+        }
     }
     
     @EventHandler
@@ -455,7 +487,8 @@ public class Listeners implements Listener
     
     @EventHandler
     public void onClickInventory(final InventoryClickEvent evt) {
-        if (evt.getView().getTitle().contains("Shop")) {
+//        evt.getView().getTitle().contains("Shop") &&
+        if (evt.getSlot() != 8) {
             return;
         }
         if (Utils.getGamer((Player)evt.getWhoClicked()) == null) {
@@ -469,17 +502,21 @@ public class Listeners implements Listener
     
     @EventHandler
     public void onDropItem(final PlayerDropItemEvent evt) {
+
+        if (evt.getItemDrop().getItemStack().getType() == Material.GOLD_NUGGET ||
+                evt.getItemDrop().getItemStack().getType() == Material.REDSTONE ||
+                evt.getItemDrop().getItemStack().getType() == Material.SLIME_BALL ||
+                evt.getItemDrop().getItemStack().getType() == Material.GHAST_TEAR) {
+            if (Utils.getGamer(evt.getPlayer()).playing != null) {
+                evt.setCancelled(true);
+            }
+        }
         if (Utils.getGamer(evt.getPlayer()) == null) {
             return;
         }
         if (Utils.getGamer(evt.getPlayer()).playing == null) {
             return;
         }
-        if (evt.getItemDrop().getItemStack().getType() == Material.GOLD_NUGGET || evt.getItemDrop().getItemStack().getType() == Material.REDSTONE) {
-            evt.getItemDrop().getItemStack().setAmount(0);
-            return;
-        }
-        evt.setCancelled(true);
         Utils.updateInventoryLater(evt.getPlayer());
     }
     
@@ -492,6 +529,10 @@ public class Listeners implements Listener
         if (Utils.getGamer(evt.getPlayer()).playing == null) {
             return;
         }
-        evt.setCancelled(true);
+        if(!Utils.getGamer(evt.getPlayer()).alive) {
+            evt.setCancelled(true);
+        }
     }
+
+
 }
