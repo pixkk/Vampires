@@ -13,7 +13,7 @@ public class MessagesConfig {
     public FileConfiguration messagesconf;
     public File messagesfile;
 
-	public boolean disable = false;
+	public boolean disabled = false;
 
     public void setup(final Plugin plugin) {
     	messagesfile = new File(plugin.getDataFolder(), "messages.yml");
@@ -24,7 +24,7 @@ public class MessagesConfig {
 				Bukkit.getConsoleSender().sendMessage("§cFile \"messages.yml\" is empty. Please, copy language file from https://github.com/pixkk/Vampires#languages \n");
 				Bukkit.getConsoleSender().sendMessage("§c------------------------------------------------------------------------------------------------------- \n");
 				Listeners.plugin.getServer().getPluginManager().disablePlugin(Listeners.plugin);
-				disable = true;
+				disabled = true;
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -35,7 +35,7 @@ public class MessagesConfig {
 				Bukkit.getConsoleSender().sendMessage("§cFile \"messages.yml\" is empty. Please, copy language file from https://github.com/pixkk/Vampires#languages \n");
 				Bukkit.getConsoleSender().sendMessage("§c------------------------------------------------------------------------------------------------------- \n");
 				plugin.getServer().getPluginManager().disablePlugin(plugin);
-				disable = true;
+				disabled = true;
 			}
 			messagesconf = YamlConfiguration.loadConfiguration(messagesfile);
 		}
