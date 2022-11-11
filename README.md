@@ -4,7 +4,7 @@ Vampires - confrontation between humans and vampires. The goal of the vampires i
 Vampires - plugin, which created by **@TigerHix** and modified by **@pixkk** 
 
 ## Which version of minecraft server support this plugin?
-- Spigot Minecraft 1.16 (tested 1.16.5)
+- Spigot Minecraft 1.16-1.19.2 (spigot works fine)
 
 ## Screenshots
 <details>
@@ -49,6 +49,7 @@ join-command: Join the game
 leave-command: Leave current game
 lobby-command: Teleport to the lobby
 help-command: Show this page
+list-of-arenas: 'List of available arenas:'
 invalid-arguments: Invalid arguments. Use command
 arena-not-exist: Arena does not exist!
 arena-exist: This arena already exists!
@@ -213,7 +214,7 @@ general:
   requirements:
     min: 2 (minimum number of players) 
     max: 16 (maximum number of players) 
-  lobby: Vampirezlobboy,-222.76588858395812,76.0,323.54242126793673,-281.5634,29.700142 (coordinates of lobby, /vampire setlobby)
+  lobby: Vampirezlobboy,-222.76588858395812,76.0,323.54242126793673,-281.5634,29.700142 (World name, XYZ, yaw, pitch coordinates of lobby - /vampire setlobby)
 ```
 ### Arena
 ```
@@ -313,5 +314,4 @@ signs:
 - transfer player stats in another file 
 - set seconds and count of players for each arena
 - fix arrow (find player)
-- add support for another versions of minecraft server
 - manual changing cost of items in shop
