@@ -24,6 +24,7 @@ Vampires - plugin, which created by **@TigerHix** and modified by **@pixkk**
 /vampire - get information about plugin  
 /vampire help - get list of commands (only players commands displayed)  
 /vampire join [arena] - join the arena  
+/vampire list - List of available arenas  
 /vampire leave - leave the arena  
 /vampire lobby - teleport to lobby  
 ### For operators of server
