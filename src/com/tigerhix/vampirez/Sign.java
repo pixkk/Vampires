@@ -32,9 +32,12 @@ public class Sign implements Listener
         }else {
         	//Bukkit.getConsoleSender().sendMessage("§6" + this.arena.name);	
         }
-        
+
         this.block = block;
-        this.sign = (org.bukkit.block.Sign)block.getState();
+        BlockState state = block.getState();
+        if (state instanceof org.bukkit.block.Sign) {
+            this.sign = (org.bukkit.block.Sign) state;
+        }
         this.ID = 0;
     }
     
@@ -52,7 +55,7 @@ public class Sign implements Listener
     }
     
     public void startTimer() {
-       if (this.arena == null || this.block == null || this.block.getState() == null) {
+       if (this.arena == null || this.block == null || this.sign == null) {
             return;
         }
     	
@@ -123,9 +126,10 @@ public class Sign implements Listener
             return;
         }
         try {
-            Game.join(this.arena, Utils.getGamer(evt.getPlayer()));
-        } catch (NullPointerException ignored) {
-
+            Game.join(Objects.requireNonNull(Utils.getArena(String.valueOf(this.arena))), Utils.getGamer(evt.getPlayer()));
+//            Game.join(this.arena, Utils.getGamer(evt.getPlayer()));
+        } catch (NullPointerException e) {
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Error: " + e.getMessage());
         }
     }
 }

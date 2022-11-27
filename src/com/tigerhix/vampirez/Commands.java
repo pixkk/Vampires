@@ -15,7 +15,7 @@ public class Commands implements CommandExecutor
     }
     
     public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof final Player player)) {
             if (args.length == 0) {
                 Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN+"[VampireZ]"+ ChatColor.GOLD+" The VampireZ plugin is developed by TigerHix. User Pixkk continues to support the plugin.");
 
@@ -36,7 +36,6 @@ public class Commands implements CommandExecutor
             sender.sendMessage(ChatColor.GREEN+"[VampireZ]"+ ChatColor.RED+" Only players can use this command!");
             return true;
         }
-        final Player player = (Player)sender;
         if (args.length == 0) {
             player.sendMessage(ChatColor.GREEN+"[VampireZ]"+ ChatColor.GOLD+" Plugin was developed by TigerHix,\nmodified by Pixkk.\n");
             return true;
@@ -50,6 +49,7 @@ public class Commands implements CommandExecutor
                 }
                 player.sendMessage(ChatColor.GREEN +"[VampireZ]"+ ChatColor.AQUA + " "+ plugin.message.get().get("available-commands") +":");
                 player.sendMessage(ChatColor.GRAY + " /vampire join [name] - " + plugin.message.get().get("join-command") +".");
+                player.sendMessage(ChatColor.GRAY + " /vampire arenas - " + plugin.message.get().get("list-of-arenas") +".");
                 player.sendMessage(ChatColor.GRAY + " /vampire leave - " + plugin.message.get().get("leave-command") +".");
                 player.sendMessage(ChatColor.GRAY + " /vampire lobby - " + plugin.message.get().get("lobby-command") +".");
                 player.sendMessage(ChatColor.GRAY + " /vampire help - "+ plugin.message.get().get("help-command") +".");
@@ -226,10 +226,22 @@ public class Commands implements CommandExecutor
                     return true;
                 }
                 else if (action.equalsIgnoreCase("reload") && player.isOp()) {
-                   // this.plugin.saveConfig();
+                    // this.plugin.saveConfig();
                     this.plugin.getServer().getPluginManager().disablePlugin(plugin);
                     this.plugin.getServer().getPluginManager().enablePlugin(plugin);
                     player.sendMessage(ChatColor.GREEN+"[VampireZ] " + plugin.message.get().get("plugin-reloaded"));
+//                    System.out.print("&4&l[VampireZ] Plugin reloaded!");
+                    return true;
+                }
+                else if (action.equalsIgnoreCase("arenas")) {
+
+                    player.sendMessage(ChatColor.GREEN+"[VampireZ] " + plugin.message.get().get("list-of-arenas"));
+                    int i = 1;
+                    for (final String name : plugin.getConfig().getStringList("arenas.enabled-arenas")) {
+                        plugin.arenas.put(name, new Arena(plugin, name));
+                        player.sendMessage("§c" + i+". " +name+ "");
+                        i++;
+                    }
 //                    System.out.print("&4&l[VampireZ] Plugin reloaded!");
                     return true;
                 }

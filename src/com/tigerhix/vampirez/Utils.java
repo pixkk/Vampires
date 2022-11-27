@@ -4,6 +4,7 @@ import org.bukkit.entity.*;
 import java.util.*;
 import org.bukkit.*;
 import org.bukkit.plugin.*;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class Utils
 {
@@ -20,11 +21,11 @@ public class Utils
     }
 
     public static Arena getArena(final String arena) {
-        return Utils.plugin.arenas.containsKey(arena) ? Utils.plugin.arenas.get(arena) : null;
+        return Utils.plugin.arenas.getOrDefault(arena, null);
     }
     
     public static Gamer getGamer(final Player player) {
-        return Utils.plugin.gamers.containsKey(player.getName()) ? Utils.plugin.gamers.get(player.getName()) : null;
+        return Utils.plugin.gamers.getOrDefault(player.getName(), null);
     }
     
     public static String locationToString(final Location loc) {
@@ -58,12 +59,25 @@ public class Utils
     }
     
     public static void updateInventoryLater(final Player player) {
-        Bukkit.getScheduler().runTaskLater((Plugin)Utils.plugin, (Runnable)new Runnable() {
-            @Override
-            public void run() {
-                player.updateInventory();
-            }
-        }, 1L);
+
+        try {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    player.updateInventory();
+                }
+            }.runTaskLater(Utils.plugin, 1L);
+
+//            Bukkit.getScheduler().runTaskLater(Utils.plugin, new Runnable() {
+//                @Override
+//                public void run() {
+//                    player.updateInventory();
+//                }
+//            }, 1L);
+        } catch (IllegalStateException | NoClassDefFoundError e) {
+            Bukkit.getConsoleSender().sendMessage("&eError! Please, use Spigot cores! \n" + e);
+        }
+
     }
     
     public static String getFormattedTime(final int seconds) {

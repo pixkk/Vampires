@@ -1,5 +1,7 @@
 package com.tigerhix.vampirez;
 
+
+import org.bstats.charts.SimplePie;
 import org.bukkit.plugin.java.*;
 import org.bukkit.scoreboard.*;
 import com.tigerhix.vampirez.lib.*;
@@ -15,6 +17,7 @@ import org.bukkit.entity.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.Callable;
 
 public class Main extends JavaPlugin
 {
@@ -25,6 +28,8 @@ public class Main extends JavaPlugin
     public HashMap<Location, Sign> signs;
     public HashMap<String, ItemStack[]> inventories;
     public MessagesConfig message;
+
+    private Main main;
  
     
     public Main() {
@@ -33,7 +38,7 @@ public class Main extends JavaPlugin
         this.signs = new HashMap<Location, Sign>();
         this.inventories = new HashMap<String, ItemStack[]>();
     }
-    
+
     public void onEnable() {
     	
     	Bukkit.getConsoleSender().sendMessage("§c========================================\n");
@@ -45,6 +50,20 @@ public class Main extends JavaPlugin
         this.messenger = new ItemMessage(this);
         this.message = new MessagesConfig();
         message.setup(this);
+
+        int pluginId = 16858;
+        try {
+            Metrics metrics = new Metrics(this, pluginId);
+
+            metrics.addCustomChart(new Metrics.SingleLineChart("players", () -> {
+                return Bukkit.getOnlinePlayers().size();
+            }));
+
+        } catch (Exception ignored) {
+
+        }
+
+
         String version_server = Utils.getServerVersion();
         Bukkit.getConsoleSender().sendMessage("§cDetected server version: " + version_server);
 //        Check if messages.yml is empty

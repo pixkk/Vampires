@@ -334,7 +334,7 @@ public class Game
     
     public static void stop(final Arena arena) {
 
-        arena.status = "finished";
+
         arena.stopTimer();
         arena.broadcast(ChatColor.GREEN+"[VampireZ] " +ChatColor.GOLD + ""+ plugin.message.get().get("game-over")+" " + arena.getWinningTeam().substring(0, 1).toUpperCase() + arena.getWinningTeam().substring(1) + " "+ plugin.message.get().get("won")+"");
         if (arena.getWinningTeam().equalsIgnoreCase(plugin.message.get().get("survivors").toString())) {
@@ -352,6 +352,7 @@ public class Game
                 arena.reset();
             }
         }, 100L);
+        arena.status = "finished";
     }
 
 }
