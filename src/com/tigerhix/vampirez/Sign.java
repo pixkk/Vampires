@@ -8,6 +8,8 @@ import org.bukkit.event.block.*;
 import org.bukkit.*;
 import org.bukkit.event.*;
 
+import static com.tigerhix.vampirez.Reason.AUTOMATIC;
+
 public class Sign implements Listener
 {
     public Main plugin, plugin2;
@@ -49,7 +51,7 @@ public class Sign implements Listener
         else {
             signs.remove(Utils.locationToString(this.block.getLocation()) + "@" + this.arena.name);
         }
-        Listeners.plugin.getConfig().set("signs", (Object)signs);
+        Listeners.plugin.getConfig().set("signs", signs);
        //- Vampirezlobboy,-872.0,95.0,-856.0,0.0,0.0@Village
         Listeners.plugin.saveConfig();
     }
@@ -126,9 +128,10 @@ public class Sign implements Listener
             return;
         }
         try {
-            Game.join(Objects.requireNonNull(Utils.getArena(String.valueOf(this.arena))), Utils.getGamer(evt.getPlayer()));
-//            Game.join(this.arena, Utils.getGamer(evt.getPlayer()));
+//            Game.join(Objects.requireNonNull(Utils.getArena(String.valueOf(this.arena))), Utils.getGamer(evt.getPlayer()));
+            Game.join(arena, Utils.getGamer(evt.getPlayer()));
         } catch (NullPointerException e) {
+            Game.leave(Utils.getGamer(evt.getPlayer()), AUTOMATIC);
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Error: " + e.getMessage());
         }
     }

@@ -122,7 +122,9 @@ public class Gamer
     }
     
     public Location getNearestZombieSpawn() {
-        final List<Location> spawns = this.playing.zombieSpawns;
+
+//        final List<Location> spawns = this.playing.zombieSpawns;
+        final List<Location> spawns = Utils.stringListToLocation(this.playing.zombieSpawnsString);
         spawns.add(new Location(this.getPlayer().getWorld(), 9999.0, 9999.0, 9999.0));
         int min = spawns.size() - 1;
         for (int i = 0; i < spawns.size(); ++i) {

@@ -81,7 +81,7 @@ public class Commands implements CommandExecutor
                         player.sendMessage(ChatColor.GREEN+"[VampireZ] "+ ChatColor.RED + ""+ plugin.message.get().get("full-arena"));
                         return true;
                     }
-                    Game.join(Objects.requireNonNull(Utils.getArena(target)), Utils.getGamer(player));
+                    Game.join(Utils.getArena(target), Utils.getGamer(player));
                     return true;
                 }
                 else if (action.equalsIgnoreCase("leave")) {

@@ -1,23 +1,16 @@
 package com.tigerhix.vampirez;
 
 
-import org.bstats.charts.SimplePie;
-import org.bukkit.plugin.java.*;
-import org.bukkit.scoreboard.*;
-import com.tigerhix.vampirez.lib.*;
-import org.bukkit.*;
-import org.bukkit.block.Block;
-import org.bukkit.inventory.*;
-import org.bukkit.plugin.*;
-import org.bukkit.command.*;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.*;
+import com.tigerhix.vampirez.lib.ItemMessage;
+import com.tigerhix.vampirez.lib.Metrics;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.ScoreboardManager;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
-import java.util.concurrent.Callable;
+import java.util.HashMap;
 
 public class Main extends JavaPlugin
 {
@@ -41,9 +34,9 @@ public class Main extends JavaPlugin
 
     public void onEnable() {
     	
-    	Bukkit.getConsoleSender().sendMessage("§c========================================\n");
-    	Bukkit.getConsoleSender().sendMessage("§c			Enabling VAMPIREZ			\n");
-    	Bukkit.getConsoleSender().sendMessage("§c========================================\n");
+    	Bukkit.getConsoleSender().sendMessage("§c========================================");
+    	Bukkit.getConsoleSender().sendMessage("§c			Enabling VAMPIREZ			");
+    	Bukkit.getConsoleSender().sendMessage("§c========================================");
         this.getConfig().options().copyDefaults(true);
         this.saveDefaultConfig();
         this.sm = this.getServer().getScoreboardManager();
@@ -69,14 +62,15 @@ public class Main extends JavaPlugin
 //        Check if messages.yml is empty
 
         if(!message.disabled) {
-            Bukkit.getConsoleSender().sendMessage("Minimum seconds: " + this.getConfig().getInt("general.requirements.min")+ "\n");
-            Bukkit.getConsoleSender().sendMessage("Maximum seconds: " + this.getConfig().getInt("general.requirements.max")+ "\n");
+            Bukkit.getConsoleSender().sendMessage("Minimum seconds: " + this.getConfig().getInt("general.requirements.min"));
+            Bukkit.getConsoleSender().sendMessage("Maximum seconds: " + this.getConfig().getInt("general.requirements.max"));
             message.get();
             message.reloadconf();
             message.save();
 
 
             this.getCommand("vampire").setExecutor(new Commands(this));
+
             new Config(this);
             new Game(this);
             new Listeners(this);
@@ -85,7 +79,7 @@ public class Main extends JavaPlugin
             for (final Player player : this.getServer().getOnlinePlayers()) {
                 this.gamers.put(player.getName(), new Gamer(this, player.getName()));
             }
-            Bukkit.getConsoleSender().sendMessage("§cEnabled arenas:" + "\n");
+            Bukkit.getConsoleSender().sendMessage("§cEnabled arenas:");
             int i = 1;
             for (final String name : this.getConfig().getStringList("arenas.enabled-arenas")) {
                 this.arenas.put(name, new Arena(this, name));
@@ -105,8 +99,8 @@ public class Main extends JavaPlugin
     }
     public void onDisable() {
     	this.reloadConfig();
-    	Bukkit.getConsoleSender().sendMessage("§c========================================\n");
-    	Bukkit.getConsoleSender().sendMessage("§c			Disabling VAMPIREZ			\n");
-    	Bukkit.getConsoleSender().sendMessage("§c========================================\n");
+    	Bukkit.getConsoleSender().sendMessage("§c========================================");
+    	Bukkit.getConsoleSender().sendMessage("§c			Disabling VAMPIREZ			");
+    	Bukkit.getConsoleSender().sendMessage("§c========================================");
     }
 }

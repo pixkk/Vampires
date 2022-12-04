@@ -21,8 +21,14 @@ public class Arena
     public List<Entity> zombies;
     public Location survivorSpawn;
     public Location vampireSpawn;
-    public List<Location> zombieSpawns;
     public Location lobbySpawn;
+
+    public String survivorSpawnString;
+    public String vampireSpawnString;
+    public String lobbySpawnString;
+    public List<String> zombieSpawnsString;
+
+    public List<Location> zombieSpawns;
     public int firstX;
     public int firstZ;
     public int secondX;
@@ -34,6 +40,7 @@ public class Arena
     public int waitingID;
     public int matchID;
     public int scoreboardID;
+
     public Scoreboard board;
      Objective obj;
 
@@ -45,8 +52,15 @@ public class Arena
         this.zombies = new CopyOnWriteArrayList<Entity>();
         this.survivorSpawn = Utils.stringToLocation(plugin.getConfig().getString("arenas." + name + ".survivor-spawn"));
         this.vampireSpawn = Utils.stringToLocation(plugin.getConfig().getString("arenas." + name + ".vampire-spawn"));
+
         this.lobbySpawn = Utils.stringToLocation(plugin.getConfig().getString("arenas." + name + ".lobby-spawn"));
         this.zombieSpawns = Utils.stringListToLocation(plugin.getConfig().getStringList("arenas." + name + ".zombie-spawns"));
+
+        this.lobbySpawnString = plugin.getConfig().getString("arenas." + name + ".lobby-spawn");
+        this.vampireSpawnString = plugin.getConfig().getString("arenas." + name + ".vampire-spawn");
+        this.survivorSpawnString = plugin.getConfig().getString("arenas." + name + ".survivor-spawn");
+        this.zombieSpawnsString = plugin.getConfig().getStringList("arenas." + name + ".zombie-spawns");
+
         this.firstX = ((plugin.getConfig().getString("arenas." + name + ".coordinate") == null) ? 0 : Integer.parseInt(plugin.getConfig().getString("arenas." + name + ".coordinate").split(",")[0]));
         this.firstZ = ((plugin.getConfig().getString("arenas." + name + ".coordinate") == null) ? 0 : Integer.parseInt(plugin.getConfig().getString("arenas." + name + ".coordinate").split(",")[1]));
         this.secondX = ((plugin.getConfig().getString("arenas." + name + ".coordinate") == null) ? 0 : Integer.parseInt(plugin.getConfig().getString("arenas." + name + ".coordinate").split(",")[2]));

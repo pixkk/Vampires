@@ -10,10 +10,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scoreboard.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static com.tigerhix.vampirez.Reason.INITIATIVE;
 
@@ -66,16 +63,18 @@ public class Game
     
     public static void join(final Arena arena, final Gamer gamer) {
 
-
+        namearena = arena.name;
 
         arena.gamers.add(gamer);
-        
-        namearena = arena.name;
+
         arena.broadcast(ChatColor.GREEN+"[VampireZ] "+ ChatColor.GOLD + gamer.name + " "+plugin.message.get().get("joined") +" (" + arena.gamers.size() + "/" + Config.maxPlayer + ")");
+//        arena.broadcast(String.valueOf(arena.lobbySpawn));
+        arena.lobbySpawn = Utils.stringToLocation(arena.lobbySpawnString);
         gamer.playing = arena;
         final Player player = gamer.getPlayer();
         try {
-            player.teleport(arena.lobbySpawn);
+
+            player.teleport(Utils.stringToLocation(arena.lobbySpawnString));
             Game.plugin.inventories.put(player.getName(), player.getInventory().getContents());
             player.getInventory().clear();
             Utils.updateInventoryLater(player);
@@ -127,7 +126,7 @@ public class Game
         player.getInventory().clear();
         player.getInventory().setContents((ItemStack[])Game.plugin.inventories.get(player.getName()));
         player.getInventory().setArmorContents((ItemStack[])null);
-        Utils.updateInventoryLater(player);
+//        Utils.updateInventoryLater(player);
         player.setExp(0.0f);
         player.setLevel(0);
         player.setHealth(20.0);
@@ -211,7 +210,9 @@ public class Game
             if (!gamer.alive) {
                 gamer.sendMessage(ChatColor.GREEN+"[VampireZ] " + ChatColor.RED + ChatColor.BOLD + plugin.message.get().get("you-are-vampire"));
                 gamer.addCash(40);
-                player.teleport(arena.vampireSpawn);
+
+
+                player.teleport(Utils.stringToLocation(arena.vampireSpawnString));
                 player.getInventory().setItem(0, ItemTemplate.ORIGINAL_VAMPIRE_FANG.getItem());
                 player.addPotionEffects((Collection)Config.vampireEffects);
                 player.getInventory().setHelmet(ItemTemplate.VAMPIRE_HEAD.getItem());
@@ -221,7 +222,7 @@ public class Game
             else {
                 gamer.sendMessage(ChatColor.GREEN+"[VampireZ] " + ChatColor.RED + ChatColor.BOLD + plugin.message.get().get("you-are-alive"));
                 gamer.addCash(10);
-                player.teleport(arena.survivorSpawn);
+                player.teleport(Utils.stringToLocation(arena.survivorSpawnString));
                 player.getInventory().setItem(0, ItemTemplate.WOOD_SWORD.getItem());
                 player.addPotionEffects((Collection)Config.survivorEffects);
                 player.setFoodLevel(20);
@@ -314,7 +315,9 @@ public class Game
         for (final Gamer survivor2 : randomSurvivors) {
             final Location spawn = survivor2.getNearestZombieSpawn();
             for (int count = Game.random.nextInt(arena.wave) + 2, j = 1; j <= count; ++j) {
-                final LivingEntity zombie = (LivingEntity)arena.vampireSpawn.getWorld().spawnEntity(Utils.getRandomNearbyLocation(spawn), EntityType.ZOMBIE);
+
+//                final LivingEntity zombie = (LivingEntity)arena.vampireSpawn.getWorld().spawnEntity(Utils.getRandomNearbyLocation(spawn), EntityType.ZOMBIE);
+                final LivingEntity zombie = (LivingEntity)Utils.stringToLocation(arena.vampireSpawnString).getWorld().spawnEntity(Utils.getRandomNearbyLocation(spawn), EntityType.ZOMBIE);
                 zombie.getEquipment().setHelmet(new ItemStack(Material.LEATHER_HELMET, 1));
                 arena.zombies.add((Entity)zombie);
                 

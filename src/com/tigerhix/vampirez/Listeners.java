@@ -166,78 +166,164 @@ public class Listeners implements Listener
     }
 
 
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerDeath(final PlayerDeathEvent evt) {
-        if (Utils.getGamer(evt.getEntity()) == null) {
+
+    @EventHandler
+    public void onPlayerDamage(final EntityDamageByEntityEvent evt) {
+        if (!(evt.getEntity() instanceof Player)) {
             return;
         }
-        if (Utils.getGamer(evt.getEntity()).playing == null) {
+        if (Utils.getGamer((Player) evt.getEntity()) == null) {
             return;
         }
-        evt.setDeathMessage((String)null);
-        evt.getDrops().clear();
-        evt.setDroppedExp(0);
-        final Player player = evt.getEntity();
-        final Gamer gamer = Utils.getGamer(player);
-        final Arena arena = gamer.playing;
-        if (gamer.alive) {
-            gamer.alive = false;
-            gamer.transferring = true;
-            if (player.getKiller() == null) {
-                arena.broadcast(ChatColor.GREEN + "[VampireZ] " + ChatColor.RED + gamer.getDisplayName() + " "+  plugin.message.get().get("id-dead") +". "+ plugin.message.get().get("gamers-left")+ " " + arena.getSurvivors().size() + " "+  plugin.message.get().get("survivors-2") +"" + ((arena.getSurvivors().size() < 2) ? "" : "") );
-            }
-            else {
-                final Player killer = player.getKiller();
-                arena.broadcast(ChatColor.GREEN + "[VampireZ] " + ChatColor.RED + gamer.getDisplayName() + " "+ ChatColor.RED + plugin.message.get().get("was-killed") +" " + killer.getDisplayName() + ". "+  plugin.message.get().get("gamers-left") + " " + arena.getSurvivors().size() + " "+  plugin.message.get().get("survivors-2") +"" + ((arena.getSurvivors().size() < 2) ? "" : "") );
-                Utils.getGamer(killer).ding();
-                Utils.getGamer(killer).addCash(15);
-                Utils.getGamer(killer).addCoins(5);
-                final Gamer gamer2 = Utils.getGamer(killer);
-                ++gamer2.survivorKills;
-                for (final Gamer other : arena.getVampires()) {
-                    if (other.name.equalsIgnoreCase(killer.getName())) {
-                        continue;
+        if (Utils.getGamer((Player) evt.getEntity()).playing == null) {
+            return;
+        }
+        if (((Player) evt.getEntity()).getHealth() < evt.getDamage()) {
+//        if ((int) ((Player) evt.getEntity()).getHealth() > 0 && (int) ((Player) evt.getEntity()).getHealth() < 0.5) {
+            final Player player = (Player) evt.getEntity();
+            player.getInventory().clear();
+            player.setExp(0);
+            final Gamer gamer = Utils.getGamer(player);
+            final Arena arena = gamer.playing;
+            if (gamer.alive) {
+                gamer.alive = false;
+                gamer.transferring = true;
+                if (player.getKiller() == null) {
+                    arena.broadcast(ChatColor.GREEN + "[VampireZ] " + ChatColor.RED + gamer.getDisplayName() + " "+  plugin.message.get().get("id-dead") +". "+ plugin.message.get().get("gamers-left")+ " " + arena.getSurvivors().size() + " "+  plugin.message.get().get("survivors-2") +"" + ((arena.getSurvivors().size() < 2) ? "" : "") );
+                }
+                else {
+                    final Player killer = player.getKiller();
+                    arena.broadcast(ChatColor.GREEN + "[VampireZ] " + ChatColor.RED + gamer.getDisplayName() + " "+ ChatColor.RED + plugin.message.get().get("was-killed") +" " + killer.getDisplayName() + ". "+  plugin.message.get().get("gamers-left") + " " + arena.getSurvivors().size() + " "+  plugin.message.get().get("survivors-2") +"" + ((arena.getSurvivors().size() < 2) ? "" : "") );
+                    Utils.getGamer(killer).ding();
+                    Utils.getGamer(killer).addCash(15);
+                    Utils.getGamer(killer).addCoins(5);
+                    final Gamer gamer2 = Utils.getGamer(killer);
+                    ++gamer2.survivorKills;
+                    for (final Gamer other : arena.getVampires()) {
+                        if (other.name.equalsIgnoreCase(killer.getName())) {
+                            continue;
+                        }
+                        other.addCash(5);
                     }
-                    other.addCash(5);
+                }
+
+                if (arena.getSurvivors().size() == 0) {
+                    Game.stop(arena);
                 }
             }
-
-            if (arena.getSurvivors().size() == 0) {
-                Game.stop(arena);
-            }
-        }
-        else {
-            if (player.getKiller() == null) {
-                return;
-            }
-            final Player killer = player.getKiller();
-            arena.broadcast(ChatColor.GREEN + "[VampireZ] " + ChatColor.RED + gamer.getDisplayName() + " "+  plugin.message.get().get("was-killed") +" " + killer.getDisplayName() + ".");
-            Utils.getGamer(killer).ding();
-            Utils.getGamer(killer).addCash(10);
-            Utils.getGamer(killer).addCoins(5);
-            final Gamer gamer3 = Utils.getGamer(killer);
-            ++gamer3.vampireKills;
-
-        }
-
-        try {
-            if(server_version.equals("1.16.5")) {
-                ((org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer)player).getHandle().playerConnection.a(new net.minecraft.server.v1_16_R3.PacketPlayInClientCommand(net.minecraft.server.v1_16_R3.PacketPlayInClientCommand.EnumClientCommand.PERFORM_RESPAWN));
-            }
-            else if (server_version.equals("1.17")) {
-//                EnumClientCommand.a where a - PERFORM_RESPAWN, b - REQUEST_STATS
-                ((org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer)player).getHandle().b.a(new net.minecraft.network.protocol.game.PacketPlayInClientCommand(net.minecraft.network.protocol.game.PacketPlayInClientCommand.EnumClientCommand.a));
-            }
             else {
-                evt.getEntity().spigot().respawn();
+                if (player.getKiller() == null) {
+                    return;
+                }
+                final Player killer = player.getKiller();
+                arena.broadcast(ChatColor.GREEN + "[VampireZ] " + ChatColor.RED + gamer.getDisplayName() + " "+  plugin.message.get().get("was-killed") +" " + killer.getDisplayName() + ".");
+                Utils.getGamer(killer).ding();
+                Utils.getGamer(killer).addCash(10);
+                Utils.getGamer(killer).addCoins(5);
+                final Gamer gamer3 = Utils.getGamer(killer);
+                ++gamer3.vampireKills;
+
             }
 
-        }catch (NoClassDefFoundError e) {
-            Bukkit.getConsoleSender().sendMessage("&eWarning! This version of minecraft server does not support autorespawn. " +
-                    "Check updates for the plugin.");
+            try {
+//            if(server_version.equals("1.16.5")) {
+//                ((org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer)player).getHandle().playerConnection.a(new net.minecraft.server.v1_16_R3.PacketPlayInClientCommand(net.minecraft.server.v1_16_R3.PacketPlayInClientCommand.EnumClientCommand.PERFORM_RESPAWN));
+//            }
+//            else if (server_version.equals("1.17")) {
+////                EnumClientCommand.a where a - PERFORM_RESPAWN, b - REQUEST_STATS
+//                ((org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer)player).getHandle().b.a(new net.minecraft.network.protocol.game.PacketPlayInClientCommand(net.minecraft.network.protocol.game.PacketPlayInClientCommand.EnumClientCommand.a));
+//            }
+//            else {
+//            evt.getEntity().spigot().respawn();
+//            }
+
+            }catch (NoClassDefFoundError e) {
+                Bukkit.getConsoleSender().sendMessage("&eWarning! This version of minecraft server does not support autorespawn. " +
+                        "Check updates for the plugin.");
+            }
+
         }
+
+//        evt.getEntity().setDeathMessage(null);
+//        evt.getEntity()
+//        evt.setDroppedExp(0);
 
     }
+
+
+//    @EventHandler(priority = EventPriority.MONITOR)
+//    public void onPlayerDeath(final PlayerDeathEvent evt) {
+//        if (Utils.getGamer(evt.getEntity()) == null) {
+//            return;
+//        }
+//        if (Utils.getGamer(evt.getEntity()).playing == null) {
+//            return;
+//        }
+//        evt.setDeathMessage(null);
+//        evt.getDrops().clear();
+//        evt.setDroppedExp(0);
+//        final Player player = evt.getEntity();
+//        final Gamer gamer = Utils.getGamer(player);
+//        final Arena arena = gamer.playing;
+//        if (gamer.alive) {
+//            gamer.alive = false;
+//            gamer.transferring = true;
+//            if (player.getKiller() == null) {
+//                arena.broadcast(ChatColor.GREEN + "[VampireZ] " + ChatColor.RED + gamer.getDisplayName() + " "+  plugin.message.get().get("id-dead") +". "+ plugin.message.get().get("gamers-left")+ " " + arena.getSurvivors().size() + " "+  plugin.message.get().get("survivors-2") +"" + ((arena.getSurvivors().size() < 2) ? "" : "") );
+//            }
+//            else {
+//                final Player killer = player.getKiller();
+//                arena.broadcast(ChatColor.GREEN + "[VampireZ] " + ChatColor.RED + gamer.getDisplayName() + " "+ ChatColor.RED + plugin.message.get().get("was-killed") +" " + killer.getDisplayName() + ". "+  plugin.message.get().get("gamers-left") + " " + arena.getSurvivors().size() + " "+  plugin.message.get().get("survivors-2") +"" + ((arena.getSurvivors().size() < 2) ? "" : "") );
+//                Utils.getGamer(killer).ding();
+//                Utils.getGamer(killer).addCash(15);
+//                Utils.getGamer(killer).addCoins(5);
+//                final Gamer gamer2 = Utils.getGamer(killer);
+//                ++gamer2.survivorKills;
+//                for (final Gamer other : arena.getVampires()) {
+//                    if (other.name.equalsIgnoreCase(killer.getName())) {
+//                        continue;
+//                    }
+//                    other.addCash(5);
+//                }
+//            }
+//
+//            if (arena.getSurvivors().size() == 0) {
+//                Game.stop(arena);
+//            }
+//        }
+//        else {
+//            if (player.getKiller() == null) {
+//                return;
+//            }
+//            final Player killer = player.getKiller();
+//            arena.broadcast(ChatColor.GREEN + "[VampireZ] " + ChatColor.RED + gamer.getDisplayName() + " "+  plugin.message.get().get("was-killed") +" " + killer.getDisplayName() + ".");
+//            Utils.getGamer(killer).ding();
+//            Utils.getGamer(killer).addCash(10);
+//            Utils.getGamer(killer).addCoins(5);
+//            final Gamer gamer3 = Utils.getGamer(killer);
+//            ++gamer3.vampireKills;
+//
+//        }
+//
+//        try {
+////            if(server_version.equals("1.16.5")) {
+//                ((org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer)player).getHandle().playerConnection.a(new net.minecraft.server.v1_16_R3.PacketPlayInClientCommand(net.minecraft.server.v1_16_R3.PacketPlayInClientCommand.EnumClientCommand.PERFORM_RESPAWN));
+////            }
+////            else if (server_version.equals("1.17")) {
+//////                EnumClientCommand.a where a - PERFORM_RESPAWN, b - REQUEST_STATS
+////                ((org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer)player).getHandle().b.a(new net.minecraft.network.protocol.game.PacketPlayInClientCommand(net.minecraft.network.protocol.game.PacketPlayInClientCommand.EnumClientCommand.a));
+////            }
+////            else {
+////                World world  = evt.getEntity().getWorld();
+//                evt.getEntity().spigot().respawn();
+////            }
+//
+//        }catch (NoClassDefFoundError e) {
+//            Bukkit.getConsoleSender().sendMessage("&eWarning! This version of minecraft server does not support autorespawn. " +
+//                    "Check updates for the plugin.");
+//        }
+//
+//    }
     
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerCommand(final PlayerCommandPreprocessEvent evt) {
@@ -264,7 +350,7 @@ public class Listeners implements Listener
         final Player player = evt.getPlayer();
         final Gamer gamer = Utils.getGamer(player);
         final Arena arena = gamer.playing;
-        evt.setRespawnLocation(arena.vampireSpawn);
+        evt.setRespawnLocation(Utils.stringToLocation(arena.vampireSpawnString));
         player.getInventory().clear();
 //        if (!arena.status.equals("started")) {
 //            return;
