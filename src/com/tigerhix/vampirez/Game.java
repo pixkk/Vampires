@@ -196,7 +196,6 @@ public class Game
 	public static void start(final Arena arena) {
 
         arena.status = "started";
-        arena.startTimer();
         final int randomIndex = (arena.gamers.size() == 1) ? 0 : Game.random.nextInt(arena.gamers.size() - 1);
         final Gamer firstVampire = arena.gamers.get(randomIndex);
         firstVampire.alive = false;
@@ -229,6 +228,8 @@ public class Game
             }
             player.getWorld().setDifficulty(Difficulty.HARD);
         }
+
+        arena.startTimer();
         arena.timeLeft = 30;
         arena.broadcast(ChatColor.GREEN+"[VampireZ] " + ChatColor.GOLD + plugin.message.get().get("first-wave"));
     }
@@ -353,9 +354,10 @@ public class Game
                     Game.leave(gamer, Reason.AUTOMATIC);
                 }
                 arena.reset();
+                arena.status = "finished";
             }
         }, 100L);
-        arena.status = "finished";
+
     }
 
 }
