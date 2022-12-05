@@ -1,19 +1,21 @@
 package com.tigerhix.vampirez;
 
-import org.bukkit.entity.*;
-import java.util.concurrent.*;
-import org.bukkit.*;
-import org.bukkit.inventory.*;
-import org.bukkit.inventory.meta.*;
-import org.bukkit.plugin.*;
-import org.bukkit.scoreboard.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.Entity;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-import static com.tigerhix.vampirez.Game.namearena;
-
-public class Arena
-{
+public class Arena {
     public Main plugin;
     public String name;
     public String status;
@@ -42,7 +44,7 @@ public class Arena
     public int scoreboardID;
 
     public Scoreboard board;
-     Objective obj;
+    Objective obj;
 
     public Arena(final Main plugin, final String name) {
         this.plugin = plugin;
@@ -74,21 +76,21 @@ public class Arena
         this.scoreboardID = 0;
         plugin.arenas.put(name, this);
     }
-    
+
     public void save() {
-        this.plugin.getConfig().set("arenas." + this.name + ".survivor-spawn", (Object)Utils.locationToString(this.survivorSpawn));
-        this.plugin.getConfig().set("arenas." + this.name + ".vampire-spawn", (Object)Utils.locationToString(this.vampireSpawn));
-        this.plugin.getConfig().set("arenas." + this.name + ".lobby-spawn", (Object)Utils.locationToString(this.lobbySpawn));
-        this.plugin.getConfig().set("arenas." + this.name + ".zombie-spawns", (Object)Utils.locationToStringList(this.zombieSpawns));
-        this.plugin.getConfig().set("arenas." + this.name + ".coordinate", (Object)(this.firstX + "," + this.firstZ + "," + this.secondX + "," + this.secondZ));
-        final List<String> enabledArenas = (List<String>)this.plugin.getConfig().getStringList("arenas.enabled-arenas");
+        this.plugin.getConfig().set("arenas." + this.name + ".survivor-spawn", (Object) Utils.locationToString(this.survivorSpawn));
+        this.plugin.getConfig().set("arenas." + this.name + ".vampire-spawn", (Object) Utils.locationToString(this.vampireSpawn));
+        this.plugin.getConfig().set("arenas." + this.name + ".lobby-spawn", (Object) Utils.locationToString(this.lobbySpawn));
+        this.plugin.getConfig().set("arenas." + this.name + ".zombie-spawns", (Object) Utils.locationToStringList(this.zombieSpawns));
+        this.plugin.getConfig().set("arenas." + this.name + ".coordinate", (Object) (this.firstX + "," + this.firstZ + "," + this.secondX + "," + this.secondZ));
+        final List<String> enabledArenas = (List<String>) this.plugin.getConfig().getStringList("arenas.enabled-arenas");
         if (!enabledArenas.contains(this.name)) {
             enabledArenas.add(this.name);
-            this.plugin.getConfig().set("arenas.enabled-arenas", (Object)enabledArenas);
+            this.plugin.getConfig().set("arenas.enabled-arenas", (Object) enabledArenas);
         }
         this.plugin.saveConfig();
     }
-    
+
     public void reset() {
         Bukkit.getScheduler().cancelTask(this.waitingID);
         Bukkit.getScheduler().cancelTask(this.matchID);
@@ -115,80 +117,72 @@ public class Arena
         this.matchID = 0;
         this.scoreboardID = 0;
     }
-    
-    @SuppressWarnings("deprecation")
-	public void startTimer() {
+
+    public void startTimer() {
         for (final Gamer gamer : this.gamers) {
             gamer.getPlayer().setScoreboard(gamer.board);
-//            gamer.obj.getScore(this.plugin.getServer().getOfflinePlayer("Зомби")).setScore(1);
-//            gamer.obj.getScore(this.plugin.getServer().getOfflinePlayer("Зомби")).setScore(0);
         }
-        this.matchID = Bukkit.getScheduler().scheduleSyncRepeatingTask((Plugin)this.plugin, (Runnable)new Runnable() {
-            @Override
-            public void run() {
+
+        this.matchID = Bukkit.getScheduler().scheduleSyncRepeatingTask(this.plugin, () -> {
 
 
-                for (final Gamer gamer : Arena.this.gamers) {
-                    if (gamer.getPlayer() == null) return;
+            for (final Gamer gamer : this.gamers) {
+                if (gamer.getPlayer() == null) return;
 
-                    String waveString;
-                    if (Arena.this.wave == 0) {
-                        waveString = ChatColor.GOLD + " " +plugin.message.get().get("get-ready")+"";
-                    }
-                    else if (Arena.this.wave < 20) {
-                        waveString = ChatColor.GOLD + " "+ plugin.message.get().get("wave")+" №" + Utils.getRomanNumeral(Arena.this.wave);
-                    }
-                    else {
-                        waveString = ChatColor.GOLD + " "+ plugin.message.get().get("last-wave");
-                    }
-                    gamer.resetScoreboard();
-                    gamer.getPlayer().setScoreboard(gamer.board);
-                    gamer.obj.setDisplayName(ChatColor.GRAY + "" + ChatColor.BOLD + Utils.getFormattedTime(Arena.this.timePlayed) + waveString + " " + Utils.getFormattedTime(Arena.this.timeLeft));
-
-                    gamer.obj.getScore(Arena.this.plugin.getServer().getOfflinePlayer(ChatColor.RED + "" )).setScore(10);
-
-                    gamer.obj.getScore(Arena.this.plugin.getServer().getOfflinePlayer(ChatColor.GREEN + "" + ChatColor.BOLD + plugin.message.get().get("survivors")+": "+Arena.this.getSurvivors().size())).setScore(9);
-                    gamer.obj.getScore(Arena.this.plugin.getServer().getOfflinePlayer(ChatColor.RED + "" + ChatColor.BOLD + plugin.message.get().get("vampires")+": "+ Arena.this.getVampires().size())).setScore(8);
-
-                    gamer.obj.getScore(Arena.this.plugin.getServer().getOfflinePlayer(ChatColor.RED + "" )).setScore(7);
-
-                    gamer.obj.getScore(Arena.this.plugin.getServer().getOfflinePlayer(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + plugin.message.get().get("zombies")+": "+Arena.this.zombies.size())).setScore(6);
-
-                    gamer.obj.getScore(Arena.this.plugin.getServer().getOfflinePlayer(ChatColor.RED + "" )).setScore(5);
-
-                    gamer.obj.getScore(Arena.this.plugin.getServer().getOfflinePlayer(gamer.alive ? (ChatColor.GOLD +"" + ChatColor.BOLD + plugin.message.get().get("gold-3")+": "+ gamer.cash) : (ChatColor.DARK_RED +""+ plugin.message.get().get("blood-3")+": "+ gamer.cash))).setScore(4);
-                    if (!gamer.alive) {
-                        final ItemStack blood = new ItemStack(Material.REDSTONE, 1);
-                        final ItemMeta meta = blood.getItemMeta();
-                        meta.setDisplayName(ChatColor.DARK_RED + "" + ChatColor.BOLD + gamer.cash + " " + plugin.message.get().get("blood-3"));
-                        blood.setItemMeta(meta);
-                        gamer.getPlayer().getInventory().setItem(8, blood);
-                    }
-                    else {
-                        final ItemStack gold = new ItemStack(Material.GOLD_NUGGET, 1);
-                        final ItemMeta meta = gold.getItemMeta();
-                        meta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + gamer.cash + " " + plugin.message.get().get("gold-3"));
-                        gold.setItemMeta(meta);
-                        gamer.getPlayer().getInventory().setItem(8, gold);
-                    }
+                String waveString;
+                if (Arena.this.wave == 0) {
+                    waveString = ChatColor.GOLD + " " + plugin.message.get().get("get-ready") + "";
+                } else if (Arena.this.wave < 20) {
+                    waveString = ChatColor.GOLD + " " + plugin.message.get().get("wave") + " №" + Utils.getRomanNumeral(Arena.this.wave);
+                } else {
+                    waveString = ChatColor.GOLD + " " + plugin.message.get().get("last-wave");
                 }
-                final Arena this$0 = Arena.this;
-                ++this$0.timePlayed;
-                final Arena this$2 = Arena.this;
-                --this$2.timeLeft;
-                if (Arena.this.timeLeft == 0) {
-                    Game.next(Objects.requireNonNull(Utils.getArena(Arena.this.name)));
+
+                gamer.resetScoreboard();
+                gamer.getPlayer().setScoreboard(gamer.board);
+                gamer.obj.setDisplayName(ChatColor.GRAY + "" + ChatColor.BOLD + Utils.getFormattedTime(Arena.this.timePlayed) + waveString + " " + Utils.getFormattedTime(Arena.this.timeLeft));
+
+                gamer.obj.getScore(ChatColor.RED + "").setScore(10);
+                gamer.obj.getScore(ChatColor.GREEN + "" + ChatColor.BOLD + plugin.message.get().get("survivors") + ": " + Arena.this.getSurvivors().size()).setScore(9);
+
+                gamer.obj.getScore(ChatColor.RED + "" + ChatColor.BOLD + plugin.message.get().get("vampires") + ": " + Arena.this.getVampires().size()).setScore(8);
+
+                gamer.obj.getScore(ChatColor.RED + "").setScore(7);
+
+                gamer.obj.getScore(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + plugin.message.get().get("zombies") + ": " + Arena.this.zombies.size()).setScore(6);
+
+                gamer.obj.getScore(ChatColor.RED + "").setScore(5);
+
+                gamer.obj.getScore(gamer.alive ? (ChatColor.GOLD + "" + ChatColor.BOLD + plugin.message.get().get("gold-3") + ": " + gamer.cash) : (ChatColor.DARK_RED + "" + plugin.message.get().get("blood-3") + ": " + gamer.cash)).setScore(4);
+                if (!gamer.alive) {
+                    final ItemStack blood = new ItemStack(Material.REDSTONE, 1);
+                    final ItemMeta meta = blood.getItemMeta();
+                    meta.setDisplayName(ChatColor.DARK_RED + "" + ChatColor.BOLD + gamer.cash + " " + plugin.message.get().get("blood-3"));
+                    blood.setItemMeta(meta);
+                    gamer.getPlayer().getInventory().setItem(8, blood);
+                } else {
+                    final ItemStack gold = new ItemStack(Material.GOLD_NUGGET, 1);
+                    final ItemMeta meta = gold.getItemMeta();
+                    meta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + gamer.cash + " " + plugin.message.get().get("gold-3"));
+                    gold.setItemMeta(meta);
+                    gamer.getPlayer().getInventory().setItem(8, gold);
                 }
+            }
+
+            ++timePlayed;
+            --timeLeft;
+            if (Arena.this.timeLeft == 0) {
+                Game.next(Objects.requireNonNull(Utils.getArena(Arena.this.name)));
             }
         }, 0L, 20L);
     }
-    
+
     public void stopTimer() {
         Bukkit.getScheduler().cancelTask(this.matchID);
     }
-    
+
     public List<Gamer> getSurvivors() {
-        final List<Gamer> survivors = new ArrayList<Gamer>();
+        final List<Gamer> survivors = new ArrayList<>();
         for (final Gamer gamer : this.gamers) {
             if (gamer.alive) {
                 survivors.add(gamer);
@@ -196,9 +190,9 @@ public class Arena
         }
         return survivors;
     }
-    
+
     public List<Gamer> getVampires() {
-        final List<Gamer> vampires = new ArrayList<Gamer>();
+        final List<Gamer> vampires = new ArrayList<>();
         for (final Gamer gamer : this.gamers) {
             if (!gamer.alive) {
                 vampires.add(gamer);
@@ -206,20 +200,20 @@ public class Arena
         }
         return vampires;
     }
-    
+
     public String getWinningTeam() {
         if (this.getSurvivors().size() == 0) {
             return plugin.message.get().get("vampires").toString();
         }
         return plugin.message.get().get("survivors").toString();
     }
-    
+
     public void broadcast(final String message) {
         for (final Gamer gamer : this.gamers) {
             gamer.sendMessage(message);
         }
     }
-    
+
     public void broadcastOthers(final String message, final Gamer except) {
         for (final Gamer gamer : this.gamers) {
             if (gamer != except) {
