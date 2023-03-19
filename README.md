@@ -45,29 +45,33 @@ At this moment main language is English.
   <summary>Default language file (may contains misprints)</summary>
   
   ```
-  available-commands: Available commands
+# Messages file
+
+available-commands: Available commands
 join-command: Join the game
 leave-command: Leave current game
 lobby-command: Teleport to the lobby
 help-command: Show this page
-list-of-arenas: 'List of available arenas:'
+list-of-arenas: List of available arenas
 invalid-arguments: Invalid arguments. Use command
 arena-not-exist: Arena does not exist!
 arena-exist: This arena already exists!
 arena-created: The arena has been successfully created! Now set the spawn point for
-  survivors (command
+  survivors ("/vampire setsurvivor.")
 survivor-spawn-created: The spawn location of the survivors is set. Now set a spawn
-  point
+  point of vampires ("/vampire setvampire")
 prepare-created: Waiting room set up! The arena has been completed.
-vampire-spawn-created: Vampire spawn location is set. Now set a spawn point
+vampire-spawn-created: Vampire spawn location is set. Now set a spawn point of zombies
+  ("/vampire setvampire")
 zombie-spawn-in-progress: Zombie spawn location is set. Enter the command again to
-  install
+  install next point. The minimum number of points is 5.
 zombie-spawn-created: Zombie spawn locations are set. You can continue to install
-  more
+  more points. If you are ready, type /vampire setprepare for install a spawn point
+  of prepare.
 zombie-spawn-not-enough: Not enough zombie spawn points. To install additional
 need-create-arena: First, create an arena /vampire create [target].
-need-survivor-spawn: 'First, set the survivor spawn location: /vampire setsurvivor.'
-need-vampire-spawn: 'First, set the vampire spawn location: /vampire setvampire.'
+need-survivor-spawn: 'First, set the survivor spawn location: "/vampire setsurvivor."'
+need-vampire-spawn: 'First, set the vampire spawn location: "/vampire setvampire."'
 already-in-game: You are already in the game!
 in-game: You are in the game!
 game-started: The game has already started!
@@ -77,7 +81,7 @@ no-leave: You can't leave the game now!
 too-many-arguments: Too many arguments! Use command
 lobby-created: Lobby successfully installed!
 plugin-reloaded: Plugin settings reloaded!
-unknown-command: 'Unknown command. List of all commands: /vampire help'
+unknown-command: 'Unknown command. List of all commands: "/vampire help"'
 gold-1: gold!
 gold-2: Gold!
 gold-3: Gold
@@ -172,7 +176,6 @@ diamond-boots: Diamond Boots of God
 blazing-blade: blazing blade
 leave-arena: Leave the arena
 no-name-of-arena: Arena name missing.
-arena-does-not-exist: Arena does not exist
 sign-created: Plate created
 sign-removed: Decal removed
 id-dead: killed by zombies or crashed
