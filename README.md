@@ -22,20 +22,21 @@ Vampires - plugin, which created by **@TigerHix** and modified by **@pixkk**
 
 ## Commands and Permission
 ### For players
-/vampire - get information about plugin  
-/vampire help - get list of commands (only players commands displayed)  
-/vampire join [arena] - join the arena  
-/vampire list - List of available arenas  
-/vampire leave - leave the arena  
-/vampire lobby - teleport to lobby  
-### For operators of server
-/vampire reload - reload plugin  
-/vampire setlobby - set lobby position  
-/vampire create [arena] - start creation arena  
-/vampire setsurvivor - set survivors position  
-/vampire setvampire - set vampires position  
-/vampire setzombie - set zombies position  
-/vampire setprepare - set prepare position  
+/vampire - get information about plugin
+/vampire help - get list of commands (only players commands displayed)
+/vampire join [arena] - join the arena
+/vampire arenas - List of available arenas
+/vampire leave - leave the arena
+/vampire lobby - teleport to lobby
+
+### For operators of server:
+/vampire reload - reload plugin
+/vampire setlobby - set lobby position
+/vampire create [arena] - start creation arena
+/vampire setsurvivor - set survivors position
+/vampire setvampire - set vampires position
+/vampire setzombie - set zombies position
+/vampire setprepare - set prepare position
 
 ## Languages
 You can help me translate plugin on many languages - https://poeditor.com/join/project/yx8vYAxGXb  
