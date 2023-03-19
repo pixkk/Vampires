@@ -75,7 +75,7 @@ public class Utils
 //                }
 //            }, 1L);
         } catch (IllegalStateException | NoClassDefFoundError e) {
-            Bukkit.getConsoleSender().sendMessage("&eError! Please, use Spigot cores! \n" + e);
+            Bukkit.getConsoleSender().sendMessage("Error! Please, use Spigot cores! \n" + e);
         }
 
     }

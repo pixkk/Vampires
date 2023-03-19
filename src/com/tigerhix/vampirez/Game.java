@@ -354,10 +354,10 @@ public class Game
                     Game.leave(gamer, Reason.AUTOMATIC);
                 }
                 arena.reset();
-                arena.status = "finished";
             }
         }, 100L);
 
+        arena.status = "waiting";
     }
 
 }

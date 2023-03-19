@@ -51,7 +51,7 @@ public class Listeners implements Listener {
             return;
         }
         if (!Listeners.plugin.arenas.containsKey(evt.getLine(1))) {
-            evt.getPlayer().sendMessage(ChatColor.GREEN + "[VampireZ] " + ChatColor.RED + plugin.message.get().get("arena-does-not-exist"));
+            evt.getPlayer().sendMessage(ChatColor.GREEN + "[VampireZ] " + ChatColor.RED + plugin.message.get().get("arena-not-exist"));
             return;
         }
         evt.getPlayer().sendMessage(ChatColor.GREEN + "[VampireZ] " + plugin.message.get().get("sign-created"));

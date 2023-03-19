@@ -32,6 +32,10 @@ public class Main extends JavaPlugin
         this.inventories = new HashMap<String, ItemStack[]>();
     }
 
+    public MessagesConfig getMessagesConfig() {
+        return message;
+    }
+
     public void onEnable() {
     	
     	Bukkit.getConsoleSender().sendMessage("§c========================================");
@@ -52,8 +56,8 @@ public class Main extends JavaPlugin
                 return Bukkit.getOnlinePlayers().size();
             }));
 
-        } catch (Exception ignored) {
-
+        } catch (Exception e) {
+            Bukkit.getConsoleSender().sendMessage("bStats failed, maybe it disabled.");
         }
 
 
@@ -70,6 +74,7 @@ public class Main extends JavaPlugin
 
 
             this.getCommand("vampire").setExecutor(new Commands(this));
+            this.getCommand("vampire").setTabCompleter(new CommandsTabCompleter(this));
 
             new Config(this);
             new Game(this);

@@ -17,15 +17,8 @@ import java.lang.reflect.*;
 
 public class ItemMessage
 {
- //   private static final int INTERVAL = 20;
- //   private static final int DEFAULT_DURATION = 2;
- //   private static final int DEFAULT_PRIORITY = 0;
-//    private static final String DEF_FORMAT_1 = "%s";
- //   private static final String DEF_FORMAT_2 = " %s ";
- //   private static final String METADATA_Q_KEY = "item-message:msg-queue";
-//    private static final String METADATA_ID_KEY = "item-message:id";
     private final Plugin plugin;
-    private String[] formats;
+    private final String[] formats;
     
     public ItemMessage(final Plugin plugin) {
         this.formats = new String[] { "%s", " %s " };
@@ -41,7 +34,7 @@ public class ItemMessage
     }
     
     public void sendMessage(final Player player, final String message, final int duration) {
-        //this.sendMessage(player, message, duration, 0);
+        this.sendMessage(player, message, duration, 0);
     }
     
     public void sendMessage(final Player player, final String message, final int duration, final int priority) {
@@ -63,20 +56,20 @@ public class ItemMessage
     private long getNextId(final Player player) {
         long id;
         if (player.hasMetadata("item-message:id")) {
-            final List<MetadataValue> l = (List<MetadataValue>)player.getMetadata("item-message:id");
+            final List<MetadataValue> l = player.getMetadata("item-message:id");
             id = ((l.size() >= 1) ? l.get(0).asLong() : 1L);
         }
         else {
             id = 1L;
         }
-        player.setMetadata("item-message:id", (MetadataValue)new FixedMetadataValue(this.plugin, (Object)(id + 1L)));
+        player.setMetadata("item-message:id", new FixedMetadataValue(this.plugin, id + 1L));
         return id;
     }
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	private PriorityQueue<MessageRecord> getMessageQueue(final Player player) {
         if (!player.hasMetadata("item-message:msg-queue")) {
-            player.setMetadata("item-message:msg-queue", (MetadataValue)new FixedMetadataValue(this.plugin, (Object)new PriorityQueue()));
+            player.setMetadata("item-message:msg-queue", new FixedMetadataValue(this.plugin, new PriorityQueue()));
         }
         for (final MetadataValue v : player.getMetadata("item-message:msg-queue")) {
             if (v.value() instanceof PriorityQueue) {
@@ -101,10 +94,10 @@ public class ItemMessage
         }
         if (other.getClass().getName().endsWith(".ItemMessage$MessageRecord")) {
             try {
-                final Method m1 = other.getClass().getMethod("getId", (Class<?>[])new Class[0]);
-                final Method m2 = other.getClass().getMethod("getPriority", (Class<?>[])new Class[0]);
-                final Method m3 = other.getClass().getMethod("getMessage", (Class<?>[])new Class[0]);
-                final Method m4 = other.getClass().getMethod("getDuration", (Class<?>[])new Class[0]);
+                final Method m1 = other.getClass().getMethod("getId");
+                final Method m2 = other.getClass().getMethod("getPriority");
+                final Method m3 = other.getClass().getMethod("getMessage");
+                final Method m4 = other.getClass().getMethod("getDuration");
                 final long otherId = (long)m1.invoke(other, new Object[0]);
                 final int otherPriority = (int)m2.invoke(other, new Object[0]);
                 final String otherMessage = (String)m3.invoke(other, new Object[0]);
@@ -127,11 +120,11 @@ public class ItemMessage
         private int iterations;
         
         public NamerTask(final Player player, final MessageRecord rec) {
-            this.playerRef = new WeakReference<Player>(player);
+            this.playerRef = new WeakReference<>(player);
             this.iterations = Math.max(1, rec.getDuration() * 20 / 20);
             this.slot = player.getInventory().getHeldItemSlot();
             this.message = rec.getMessage();
-            Bukkit.getPluginManager().registerEvents((Listener)this, ItemMessage.this.plugin);
+            Bukkit.getPluginManager().registerEvents(this, ItemMessage.this.plugin);
         }
         
         @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -180,7 +173,7 @@ public class ItemMessage
         
         private void cleanup() {
             this.cancel();
-            HandlerList.unregisterAll((Listener)this);
+            HandlerList.unregisterAll(this);
         }
         
         @SuppressWarnings("deprecation")

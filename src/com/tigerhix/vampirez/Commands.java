@@ -1,10 +1,12 @@
 package com.tigerhix.vampirez;
 
 import org.bukkit.command.*;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.*;
 import org.bukkit.*;
+import org.bukkit.util.StringUtil;
 
-import java.util.Objects;
+import java.util.*;
 
 public class Commands implements CommandExecutor
 {
@@ -22,16 +24,15 @@ public class Commands implements CommandExecutor
                 return true;
             }
 //        	final String action = args[0];
-            if(args.length >0){
-                final String action = args[0];
-                if (action.equalsIgnoreCase("reload")) {
-                    this.plugin.getServer().getPluginManager().disablePlugin(plugin);
-                    this.plugin.getServer().getPluginManager().enablePlugin(plugin);
-                    Bukkit.getConsoleSender().sendMessage("§4§l[VampireZ] Plugin reloaded!");
-                    return true;
-
-                }
-            }
+//            if(args.length >0){
+//                final String action = args[0];
+//                if (action.equalsIgnoreCase("reload")) {
+//                    this.plugin.getMessagesConfig().reloadconf();
+//                    Bukkit.getConsoleSender().sendMessage("§4§l[VampireZ] Plugin reloaded!");
+//                    return true;
+//
+//                }
+//            }
 
             sender.sendMessage(ChatColor.GREEN+"[VampireZ]"+ ChatColor.RED+" Only players can use this command!");
             return true;
@@ -227,8 +228,9 @@ public class Commands implements CommandExecutor
                 }
                 else if (action.equalsIgnoreCase("reload") && player.isOp()) {
                     // this.plugin.saveConfig();
-                    this.plugin.getServer().getPluginManager().disablePlugin(plugin);
-                    this.plugin.getServer().getPluginManager().enablePlugin(plugin);
+//                    this.plugin.getServer().getPluginManager().disablePlugin(plugin);
+//                    this.plugin.getServer().getPluginManager().enablePlugin(plugin);
+                    this.plugin.getMessagesConfig().reloadconf();
                     player.sendMessage(ChatColor.GREEN+"[VampireZ] " + plugin.message.get().get("plugin-reloaded"));
 //                    System.out.print("&4&l[VampireZ] Plugin reloaded!");
                     return true;
@@ -252,4 +254,5 @@ public class Commands implements CommandExecutor
         }
         return true;
     }
+
 }

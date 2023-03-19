@@ -70,6 +70,7 @@ public class Sign implements Listener
                    Sign.this.sign.setLine(1, Sign.this.arena.status.equals("waiting") ? Config.waitingText : Config.startedText);
                     Sign.this.sign.setLine(2, Sign.this.arena.gamers.size() + "/" + Config.maxPlayer);
                     sign.update();
+
                 }
                 else  {
                 	Sign.this.sign.setLine(0, ChatColor.GREEN + "[VampireZ]");

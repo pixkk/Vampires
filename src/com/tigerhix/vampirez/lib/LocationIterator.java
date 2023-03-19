@@ -9,7 +9,6 @@ import org.bukkit.util.Vector;
 
 public class LocationIterator implements Iterator<Location>
 {
-//    private static final int gridSize = 16777216;
     private boolean end;
     private Location[] locationQueue;
     private int currentLocation;

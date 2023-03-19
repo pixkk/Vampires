@@ -22,7 +22,7 @@ public class SurvivorShop implements Listener
 	public SurvivorShop(final Main plugin) {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents((Listener)this, (Plugin)plugin);
-        this.name = "Ã‡„‡ÁËÌ";
+        this.name = (String) plugin.message.get().get("shop");
         this.items = new ArrayList<Item>();
         this.enchants = new HashMap<Enchantment, Integer>();
         this.items.add(new Item(new ItemStack(Material.WOODEN_SWORD), null, "ßcßl" +plugin.message.get().get("wooden-sword")+"", null, 3));
