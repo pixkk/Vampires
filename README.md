@@ -46,7 +46,7 @@ At this moment main language is English.
 <details>
   <summary>Default language file (may contains misprints)</summary>
   
-  ```
+  ```yaml
 # Messages file
 
 available-commands: Available commands
@@ -58,18 +58,12 @@ list-of-arenas: List of available arenas
 invalid-arguments: Invalid arguments. Use command
 arena-not-exist: Arena does not exist!
 arena-exist: This arena already exists!
-arena-created: The arena has been successfully created! Now set the spawn point for
-  survivors ("/vampire setsurvivor.")
-survivor-spawn-created: The spawn location of the survivors is set. Now set a spawn
-  point of vampires ("/vampire setvampire")
+arena-created: The arena has been successfully created! Now set the spawn point for survivors ("/vampire setsurvivor.")
+survivor-spawn-created: The spawn location of the survivors is set. Now set a spawn point of vampires ("/vampire setvampire")
 prepare-created: Waiting room set up! The arena has been completed.
-vampire-spawn-created: Vampire spawn location is set. Now set a spawn point of zombies
-  ("/vampire setvampire")
-zombie-spawn-in-progress: Zombie spawn location is set. Enter the command again to
-  install next point. The minimum number of points is 5.
-zombie-spawn-created: Zombie spawn locations are set. You can continue to install
-  more points. If you are ready, type /vampire setprepare for install a spawn point
-  of prepare.
+vampire-spawn-created: Vampire spawn location is set. Now set a spawn point of zombies ("/vampire setvampire")
+zombie-spawn-in-progress: Zombie spawn location is set. Enter the command again to install next point. The minimum number of points is 5.
+zombie-spawn-created: Zombie spawn locations are set. You can continue to install more points. If you are ready, type /vampire setprepare for install a spawn point of prepare.
 zombie-spawn-not-enough: Not enough zombie spawn points. To install additional
 need-create-arena: First, create an arena /vampire create [target].
 need-survivor-spawn: 'First, set the survivor spawn location: "/vampire setsurvivor."'
