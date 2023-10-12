@@ -35,4 +35,4 @@ jobs:
     - name: Upload the final artifact
       uses: actions/upload-artifact@v3
       with:
-        path: build/libs/Vampires*[!s].jar
+        path: build/libs/
