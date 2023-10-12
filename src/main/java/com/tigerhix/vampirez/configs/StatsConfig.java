@@ -36,7 +36,7 @@ public class StatsConfig {
 
     public void openConnectionDatabase() {
 
-        DriverManager.setLoginTimeout(5);
+//        DriverManager.setLoginTimeout(5);
         try {
             this.connection = DriverManager.getConnection("jdbc:mysql://"+this.ip+":"+this.port+"/"+this.dbname+"?user="+this.login+"&password="+this.password);
             this.connection.createStatement();
