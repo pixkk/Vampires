@@ -32,3 +32,7 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
+    - name: Upload the final artifact
+      uses: actions/upload-artifact@v3
+      with:
+        path: build/libs/
