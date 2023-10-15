@@ -41,7 +41,8 @@ public class StatsConfig {
             this.connection = DriverManager.getConnection("jdbc:mysql://"+this.ip+":"+this.port+"/"+this.dbname+"?user="+this.login+"&password="+this.password);
             this.connection.createStatement();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + e.toString());
+//            throw new RuntimeException(e);
         }
     }
     private void setDatabaseSettings(Main plugin) {
@@ -50,6 +51,7 @@ public class StatsConfig {
         this.login = plugin.getConfig().getString("mysql.login", "login");
         this.password = plugin.getConfig().getString("mysql.password", "password");
         this.dbname = plugin.getConfig().getString("mysql.database", "db_name");
+//        this.sqlprotocol = plugin.getConfig().getString("mysql.protocol", "db_name");
     }
     private void addMessages(FileConfiguration statsconf) {
         FileConfigurationOptions options = statsconf.options();
@@ -60,12 +62,12 @@ public class StatsConfig {
     public void setup(final Main plugin) {
 
         this.plugin = plugin;
-        this.mysqlEnabled = true;
         statsfile = new File(plugin.getDataFolder(),"stats.yml");
         statsconf = YamlConfiguration.loadConfiguration(statsfile);
         this.addMessages(statsconf);
 
         if (this.plugin.getConfig().getBoolean("mysql.enabled")) {
+            this.mysqlEnabled = true;
             setDatabaseSettings(plugin);
         }
 
@@ -85,7 +87,7 @@ public class StatsConfig {
                 statement.execute(insertQuery);
             }
             resultSet.close();
-        } catch (SQLException e) {
+        } catch (SQLException | NullPointerException e) {
             Bukkit.getConsoleSender().sendMessage("§c"+e);
             Bukkit.getConsoleSender().sendMessage("\n§cUsing local file for player stats...");
 //            throw new RuntimeException(e);
@@ -122,29 +124,36 @@ public class StatsConfig {
     public void set(String input, Object value) {
 //        String input = "players.pixkk.vampire-wins";
         String[] parts = input.split("\\.");
-//        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + Arrays.toString(parts));
-        String playerName = parts[1];
-        String param = parts[2];
-        if (this.plugin.getConfig().getBoolean("mysql.enabled") && this.mysqlEnabled) {
-            try {
-                saveStatsToDatabase(value, playerName, param);
-            } catch (SQLException e) {
-
-                openConnectionDatabase();
+        try {
+            //        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + Arrays.toString(parts));
+            String playerName = parts[1];
+            String param = parts[2];
+            if (this.plugin.getConfig().getBoolean("mysql.enabled") && this.mysqlEnabled) {
                 try {
                     saveStatsToDatabase(value, playerName, param);
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
+                } catch (SQLException e) {
+
+                    openConnectionDatabase();
+                    try {
+                        saveStatsToDatabase(value, playerName, param);
+                    } catch (SQLException ex) {
+                        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + e.toString());
+//                    throw new RuntimeException(ex);
+                    }
 //                throw new RuntimeException(e);
-                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + e.toString());
+                    Bukkit.getConsoleSender().sendMessage(ChatColor.RED + e.toString());
+                }
             }
+            else {
+                FileConfiguration fileConfiguration = this.get();
+                fileConfiguration.set(input, value);
+                save();
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + e.toString());
+
         }
-        else {
-            FileConfiguration fileConfiguration = this.get();
-            fileConfiguration.set(input, value);
-            save();
-        }
+
     }
 
     private void saveStatsToDatabase(Object value, String playerName, String param) throws SQLException {
@@ -222,9 +231,11 @@ public class StatsConfig {
                     return 0;
                 } catch (SQLException ee) {
 
-                    throw new RuntimeException(ee);
+                    Bukkit.getConsoleSender().sendMessage(ChatColor.RED + e.toString());
+//                    throw new RuntimeException(ee);
                 }
             }
+            return 0;
         }
         else {
             return statsconf.getInt(input, 0);
