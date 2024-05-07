@@ -5,8 +5,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
@@ -214,7 +216,11 @@ public class Arena {
 
     public void broadcast(final String message) {
         for (final Gamer gamer : this.gamers) {
+            gamer.sendMessage("§a§l" + plugin.message.get().get("delimiter") + "\n\n");
+            gamer.sendMessage("§a§l");
             gamer.sendMessage(message);
+            gamer.sendMessage("§a§l");
+            gamer.sendMessage("§a§l" + plugin.message.get().get("delimiter") + "\n");
         }
     }
 
