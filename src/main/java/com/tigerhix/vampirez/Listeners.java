@@ -590,7 +590,7 @@ public class Listeners implements Listener {
         if (!(evt.getEntity() instanceof Player)) {
             return;
         }
-        if (evt.getCause() != EntityDamageEvent.DamageCause.FALL ) {
+        if (evt.getCause() != EntityDamageEvent.DamageCause.FALL && Utils.getGamer((Player) evt.getEntity()).gameStarted) {
             return;
         }
         if (Utils.getGamer((Player) evt.getEntity()) == null) {
