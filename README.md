@@ -1,3 +1,4 @@
+
 # Vampires
 Vampires - confrontation between humans and vampires. The goal of the vampires is to kill all the players. The goal of people is to live 24 waves.
 
@@ -316,7 +317,7 @@ signs:
 
 ## Todo
 
-- transfer player stats in another file 
+- ~~transfer player stats in another file~~ 
 - set seconds and count of players for each arena
-- fix arrow (find player)
+- ~~fix arrow (find player)~~
 - manual changing cost of items in shop
