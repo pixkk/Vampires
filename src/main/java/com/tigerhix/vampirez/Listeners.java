@@ -3,7 +3,7 @@ package com.tigerhix.vampirez;
 import com.tigerhix.vampirez.configs.Config;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
+import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -16,9 +16,9 @@ import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Listeners implements Listener {
@@ -27,12 +27,13 @@ public class Listeners implements Listener {
     public static Main plugin;
     public static Arena arena;
     public static String server_version;
+    public ArrayList<Block> breakedDoors;
 
 
     public Listeners(final Main plugin) {
         Listeners.plugin = plugin;
         Listeners.server_version = Utils.getServerVersion();
-        plugin.getServer().getPluginManager().registerEvents((Listener) this, (Plugin) plugin);
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
 
 
     }
@@ -165,9 +166,12 @@ public class Listeners implements Listener {
         }
     }
 
-
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerDamage(final EntityDamageByEntityEvent evt) {
+    public void onPlayerDamageByFire(EntityDamageEvent evt) {
+        damageFunction(evt);
+    }
+
+    private void damageFunction(EntityDamageEvent evt) {
         if (!(evt.getEntity() instanceof Player)) {
             return;
         }
@@ -196,12 +200,7 @@ public class Listeners implements Listener {
                     final LivingEntity bat = (LivingEntity) player.getWorld().spawnEntity(player.getPlayer().getLocation(), EntityType.BAT);
                     bat.setInvulnerable(true);
                     bat.setCollidable(false);
-                    plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-                        @Override
-                        public void run() {
-                            bat.remove();
-                        }
-                    }, 100L);
+                    plugin.getServer().getScheduler().runTaskLater(plugin, () -> bat.remove(), 100L);
 
                     final Player killer = player.getKiller();
                     arena.broadcast(ChatColor.GREEN + "[VampireZ] " + ChatColor.RED + gamer.getDisplayName() + " " + ChatColor.RED + plugin.message.get().get("was-killed") + " " + killer.getDisplayName() + ". " + plugin.message.get().get("gamers-left") + " " + arena.getSurvivors().size() + " " + plugin.message.get().get("survivors-2") + "" + ((arena.getSurvivors().size() < 2) ? "" : ""));
@@ -210,6 +209,7 @@ public class Listeners implements Listener {
                     Utils.getGamer(killer).addCoins(5);
                     final Gamer gamer2 = Utils.getGamer(killer);
                     ++gamer2.survivorKills;
+                    ++gamer2.inGameSurvivorKills;
                     for (final Gamer other : arena.getVampires()) {
                         if (other.name.equalsIgnoreCase(killer.getName())) {
                             continue;
@@ -222,7 +222,11 @@ public class Listeners implements Listener {
                 player.setHealth(20);
                 player.getInventory().clear();
 
+                player.sendMessage("§a§l" + plugin.message.get().get("delimiter") + "\n\n");
                 player.sendMessage(ChatColor.GREEN + "[VampireZ] " + ChatColor.RED + "" + ChatColor.BOLD + "" + plugin.message.get().get("became-vampire") + ".");
+                player.sendMessage("§a§l" + plugin.message.get().get("delimiter") + "\n");
+
+                player.setInvisible(true);
                 gamer.cash = 0;
                 gamer.alive = false;
 
@@ -246,6 +250,7 @@ public class Listeners implements Listener {
                 Utils.getGamer(killer).addCoins(5);
                 final Gamer gamer3 = Utils.getGamer(killer);
                 ++gamer3.vampireKills;
+                ++gamer3.inGameSurvivorKills;
 
                 player.teleport(Utils.stringToLocation(arena.vampireSpawnString), PlayerTeleportEvent.TeleportCause.COMMAND);
                 player.setHealth(20);
@@ -262,6 +267,11 @@ public class Listeners implements Listener {
             }, 1L);
             player.setInvulnerable(false);
         }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerDamage(final EntityDamageByEntityEvent evt) {
+        damageFunction(evt);
     }
 
 
@@ -349,7 +359,9 @@ public class Listeners implements Listener {
         }
         if (evt.getMessage().length() < 8 || !evt.getMessage().substring(0, 8).equalsIgnoreCase("/vampire")) {
             evt.setCancelled(true);
+            evt.getPlayer().sendMessage("§a§l" + plugin.message.get().get("delimiter") + "\n\n");
             evt.getPlayer().sendMessage(ChatColor.GREEN + "[VampireZ] " + ChatColor.RED + "" + plugin.message.get().get("impossible-use-command-now") + ". " + plugin.message.get().get("enter-command") + " " + ChatColor.AQUA + "/vampire leave" + ChatColor.RED + ", " + plugin.message.get().get("for-leave-arena") + ".");
+            evt.getPlayer().sendMessage("§a§l" + plugin.message.get().get("delimiter") + "\n");
         }
     }
 
@@ -482,6 +494,14 @@ public class Listeners implements Listener {
 
     @EventHandler
     public void onTargetVampire(final EntityTargetLivingEntityEvent evt) {
+        Entity target = evt.getTarget();
+
+        if (target instanceof Player && evt.getEntity() instanceof Player) {
+            if (!Utils.getGamer((Player) evt.getEntity()).alive && Utils.getGamer((Player) evt.getEntity()).gameStarted) {;
+                evt.setCancelled(true);
+            }
+            return;
+        }
         if (!(evt.getTarget() instanceof Player)) {
             return;
         }
@@ -505,7 +525,8 @@ public class Listeners implements Listener {
         for (final Arena arena : Listeners.plugin.arenas.values()) {
             for (final Entity zombie : arena.zombies) {
                 if (zombie.equals(evt.getEntity())) {
-                    evt.setCancelled(true);
+//                    evt.setCancelled(true);
+                    breakedDoors.add(evt.getBlock());
                 }
             }
         }
@@ -569,21 +590,31 @@ public class Listeners implements Listener {
         if (!(evt.getEntity() instanceof Player)) {
             return;
         }
-        if (evt.getCause() != EntityDamageEvent.DamageCause.FALL) {
+        if (evt.getCause() != EntityDamageEvent.DamageCause.FALL ) {
             return;
         }
         if (Utils.getGamer((Player) evt.getEntity()) == null) {
             return;
         }
-        if (Utils.getGamer((Player) evt.getEntity()).playing == null) {
+        if (Utils.getGamer((Player) evt.getEntity()).playing == null && Utils.getGamer((Player) evt.getEntity()).gameStarted) {
             return;
         }
-        if (Utils.getGamer((Player) evt.getEntity()).alive) {
+        if (Utils.getGamer((Player) evt.getEntity()).alive && Utils.getGamer((Player) evt.getEntity()).gameStarted) {
+
             return;
         }
         evt.setCancelled(true);
     }
+    @EventHandler
+    public void onEntityTarget(EntityTargetEvent event) {
+        Entity target = event.getTarget();
 
+        if (target instanceof Player) {
+            if (!Utils.getGamer((Player) target).alive && Utils.getGamer((Player) target).gameStarted) {
+                event.setCancelled(true);
+            }
+        }
+    }
 
     @EventHandler
     public void onClickInventory(final InventoryClickEvent evt) {
