@@ -4,7 +4,7 @@ Vampires - confrontation between humans and vampires. The goal of the vampires i
 Vampires - plugin, which created by **@TigerHix** and modified by **@pixkk** 
 
 ## Which version of minecraft server support this plugin?
-- 1.16-1.19.2 (spigot, paper, purpur tested)
+- 1.16-1.20 (spigot, paper, purpur tested)
 - Tested by users of the plugin 1.19.3 (Pufferfish)
 
 ## Screenshots
@@ -200,6 +200,11 @@ health-boost: Health Boost
 health-boost-desc: Additional row of hearts. Lasts until next death
 not-sure-needed: Not sure if you need it now
 follow-arrow: follow the arrow
+delimiter: "\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac"
+game-stats: Game stats
+vampire-kills: Vampire kills
+survivor-kills: Survivor kills
+lose: lose!
   ```
 </details>
 

@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'com.tigerhix'
-version = '4.0.1-RELEASE'
+version = '4.0.3-RELEASE'
 
 repositories {
     mavenCentral()
@@ -15,11 +15,17 @@ repositories {
         name = "sonatype"
         url = "https://oss.sonatype.org/content/groups/public/"
     }
+    maven {
+        name = "lumine"
+        url = "https://mvn.lumine.io/repository/maven-public/"
+    }
 }
 
 dependencies {
     compileOnly "org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT"
     implementation 'org.mariadb.jdbc:mariadb-java-client:3.2.0'
+// https://mvnrepository.com/artifact/org.spigotmc/spigot-1.16.5
+    implementation 'org.spigotmc:spigot-1.16.5:dev'
 
 }
 
