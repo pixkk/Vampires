@@ -20,12 +20,16 @@ public class Gamer
     public Arena selected;
     public int cash;
     public boolean alive;
+    public boolean gameStarted;
     public boolean transferring;
     public Scoreboard board;
     public Objective obj;
     public int coins;
+    public int inGameCoins = 0;
     public int vampireKills;
+    public int inGameVampireKills = 0;
     public int survivorKills;
+    public int inGameSurvivorKills = 0;
     public int vampireWins;
     public int survivorWins;
     public int flameArrowID;
@@ -59,6 +63,9 @@ public class Gamer
         this.board = this.plugin.sm.getNewScoreboard();
         (this.obj = this.board.registerNewObjective("players", "dummy", " ")).setDisplaySlot(DisplaySlot.SIDEBAR);
         this.flameArrowID = -1;
+        this.inGameCoins = 0;
+        this.inGameSurvivorKills = 0;
+        this.inGameVampireKills = 0;
     }
     public void resetScoreboard() {
         this.board = this.plugin.sm.getNewScoreboard();
@@ -92,6 +99,7 @@ public class Gamer
     }
     
     public void addCoins(final int amount) {
+        this.inGameCoins += amount;
         this.coins += amount;
         this.plugin.messenger.sendMessage(this.getPlayer(), ChatColor.YELLOW + "" + ChatColor.BOLD + "+" + amount + " "+ plugin.message.get().get("gold-2"), 3);
     }

@@ -167,6 +167,11 @@ public class MessagesConfig {
 		messagesconf.addDefault("health-boost-desc", "Additional row of hearts. Lasts until next death");
 		messagesconf.addDefault("not-sure-needed", "Not sure if you need it now");
 		messagesconf.addDefault("follow-arrow", "follow the arrow");
+		messagesconf.addDefault("delimiter", "\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac");
+		messagesconf.addDefault("game-stats", "Game stats:");
+		messagesconf.addDefault("vampire-kills", "Vampire kills:");
+		messagesconf.addDefault("survivor-kills", "Survivor kills:");
+		messagesconf.addDefault("lose", "lose!");
 		FileConfigurationOptions options = messagesconf.options();
 		options.copyDefaults(true);
 		options.header("Messages file");
