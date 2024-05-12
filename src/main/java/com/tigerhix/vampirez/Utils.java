@@ -95,28 +95,28 @@ public class Utils
         if (input < 1 || input > 20) {
             return null;
         }
-        String s = "";
+        StringBuilder s = new StringBuilder();
         while (input >= 10) {
-            s += "X";
+            s.append("X");
             input -= 10;
         }
         while (input >= 9) {
-            s += "IX";
+            s.append("IX");
             input -= 9;
         }
         while (input >= 5) {
-            s += "V";
+            s.append("V");
             input -= 5;
         }
         while (input >= 4) {
-            s += "IV";
+            s.append("IV");
             input -= 4;
         }
         while (input >= 1) {
-            s += "I";
+            s.append("I");
             --input;
         }
-        return s;
+        return s.toString();
     }
     
     public static void tell(final String message) {

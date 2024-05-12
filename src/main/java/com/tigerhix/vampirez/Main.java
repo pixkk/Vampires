@@ -133,7 +133,7 @@ public class Main extends JavaPlugin
         }
 
         this.getConfig().options().copyDefaults(true);
-        this.saveDefaultConfig();
+//        this.saveDefaultConfig();
         this.sm = this.getServer().getScoreboardManager();
         this.messenger = new ItemMessage(this);
         this.message = new MessagesConfig();

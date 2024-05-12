@@ -34,7 +34,6 @@ public class Game {
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Game.plugin, new Runnable() {
             public void run() {
                 Scoreboard board = manager.getNewScoreboard();
-                @SuppressWarnings("deprecation")
                 Objective objective = board.registerNewObjective("Infogame", "dummy");
                 objective.setDisplayName("§c§lVampireZ");
                 objective.setDisplaySlot(DisplaySlot.SIDEBAR);
