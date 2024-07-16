@@ -139,7 +139,7 @@ public class Arena {
                 if (Arena.this.wave == 0) {
                     waveString = ChatColor.GOLD + " " + plugin.message.get().get("get-ready") + "";
                 } else if (Arena.this.wave < 20) {
-                    waveString = ChatColor.GOLD + " " + plugin.message.get().get("wave") + " ¹" + Utils.getRomanNumeral(Arena.this.wave);
+                    waveString = ChatColor.GOLD + " " + plugin.message.get().get("wave") + " "+ChatColor.RED + Utils.getRomanNumeral(Arena.this.wave);
                 } else {
                     waveString = ChatColor.GOLD + " " + plugin.message.get().get("last-wave");
                 }
@@ -148,16 +148,16 @@ public class Arena {
                 gamer.getPlayer().setScoreboard(gamer.board);
                 gamer.obj.setDisplayName(ChatColor.GRAY + "" + ChatColor.BOLD + Utils.getFormattedTime(Arena.this.timePlayed) + waveString + " " + Utils.getFormattedTime(Arena.this.timeLeft));
 
-                gamer.obj.getScore(ChatColor.RED + "").setScore(10);
+                gamer.obj.getScore(ChatColor.RED + " ").setScore(10);
                 gamer.obj.getScore(ChatColor.GREEN + "" + ChatColor.BOLD + plugin.message.get().get("survivors") + ": " + Arena.this.getSurvivors().size()).setScore(9);
 
                 gamer.obj.getScore(ChatColor.RED + "" + ChatColor.BOLD + plugin.message.get().get("vampires") + ": " + Arena.this.getVampires().size()).setScore(8);
 
-                gamer.obj.getScore(ChatColor.RED + "").setScore(7);
+                gamer.obj.getScore(ChatColor.RED + " ").setScore(7);
 
                 gamer.obj.getScore(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + plugin.message.get().get("zombies") + ": " + Arena.this.zombies.size()).setScore(6);
 
-                gamer.obj.getScore(ChatColor.RED + "").setScore(5);
+                gamer.obj.getScore(ChatColor.RED + " ").setScore(5);
 
                 gamer.obj.getScore(gamer.alive ? (ChatColor.GOLD + "" + ChatColor.BOLD + plugin.message.get().get("gold-3") + ": " + gamer.cash) : (ChatColor.DARK_RED + "" + plugin.message.get().get("blood-3") + ": " + gamer.cash)).setScore(4);
                 if (!gamer.alive) {
@@ -216,11 +216,11 @@ public class Arena {
 
     public void broadcast(final String message) {
         for (final Gamer gamer : this.gamers) {
-            gamer.sendMessage("§a§l" + plugin.message.get().get("delimiter") + "\n\n");
-            gamer.sendMessage("§a§l");
+            gamer.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD  + plugin.message.get().get("delimiter") + "\n\n");
+            gamer.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD );
             gamer.sendMessage(message);
-            gamer.sendMessage("§a§l");
-            gamer.sendMessage("§a§l" + plugin.message.get().get("delimiter") + "\n");
+            gamer.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD );
+            gamer.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD  + plugin.message.get().get("delimiter") + "\n");
         }
     }
 

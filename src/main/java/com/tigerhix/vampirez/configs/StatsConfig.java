@@ -41,7 +41,7 @@ public class StatsConfig {
             this.connection = DriverManager.getConnection("jdbc:mysql://"+this.ip+":"+this.port+"/"+this.dbname+"?user="+this.login+"&password="+this.password);
             this.connection.createStatement();
         } catch (SQLException e) {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + e.toString());
+//            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + e.toString());
 //            throw new RuntimeException(e);
         }
     }
@@ -88,8 +88,8 @@ public class StatsConfig {
             }
             resultSet.close();
         } catch (SQLException | NullPointerException e) {
-            Bukkit.getConsoleSender().sendMessage("§c"+e);
-            Bukkit.getConsoleSender().sendMessage("\n§cUsing local file for player stats...");
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "" +e);
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "\nUsing local file for player stats...");
 //            throw new RuntimeException(e);
             setup(this.plugin, false);
         }

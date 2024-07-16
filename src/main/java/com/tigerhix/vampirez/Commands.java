@@ -245,7 +245,7 @@ public class Commands implements CommandExecutor
                     int i = 1;
                     for (final String name : plugin.getConfig().getStringList("arenas.enabled-arenas")) {
                         plugin.arenas.put(name, new Arena(plugin, name));
-                        player.sendMessage("§c" + i+". " +name+ "");
+                        player.sendMessage(ChatColor.RED + "" + i+". " +name+ "");
                         i++;
                     }
 //                    System.out.print("&4&l[VampireZ] Plugin reloaded!");

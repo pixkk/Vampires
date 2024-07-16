@@ -32,12 +32,12 @@ public class VampireShop implements Listener
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         this.name = ""+plugin.message.get().get("shop");
-        (this.items = new ArrayList<Item>()).add(new Item(new ItemStack(Material.BLAZE_POWDER), null, "§c§l"+plugin.message.get().get("flaming-arrow")+"", ""+plugin.message.get().get("flaming-arrow-desc"), 5));
-        this.items.add(new Item(new ItemStack(Material.REDSTONE_BLOCK), null, "§4§l"+plugin.message.get().get("vampire-regeneration")+"", ""+plugin.message.get().get("vampire-regeneration-desc"), 10));
-        this.items.add(new Item(new ItemStack(Material.REDSTONE_ORE), null, "§6§l"+plugin.message.get().get("instant-health")+"", ""+plugin.message.get().get("instant-health-desc"), 15));
-        this.items.add(new Item(new ItemStack(Material.BEACON), null, "§f§l"+plugin.message.get().get("vampire-aura")+"", ""+plugin.message.get().get("vampire-aura-desc"), 50));
-        this.items.add(new Item(new ItemStack(Material.FEATHER), null, "§b§l"+plugin.message.get().get("vampire-jump")+"", ""+plugin.message.get().get("vampire-jump-desc"), 30));
-        this.items.add(new Item(new ItemStack(Material.SPONGE), null, "§c§l"+plugin.message.get().get("health-boost")+"", ""+plugin.message.get().get("health-boost-desc"), 30));
+        (this.items = new ArrayList<Item>()).add(new Item(new ItemStack(Material.BLAZE_POWDER), null, ChatColor.RED + "" + ChatColor.BOLD +plugin.message.get().get("flaming-arrow")+"", ""+plugin.message.get().get("flaming-arrow-desc"), 5));
+        this.items.add(new Item(new ItemStack(Material.REDSTONE_BLOCK), null, ChatColor.DARK_RED + "" + ChatColor.BOLD +plugin.message.get().get("vampire-regeneration")+"", ""+plugin.message.get().get("vampire-regeneration-desc"), 10));
+        this.items.add(new Item(new ItemStack(Material.REDSTONE_ORE), null, ChatColor.GOLD + "" + ChatColor.BOLD +plugin.message.get().get("instant-health")+"", ""+plugin.message.get().get("instant-health-desc"), 15));
+        this.items.add(new Item(new ItemStack(Material.BEACON), null, ChatColor.WHITE + "" + ChatColor.BOLD+plugin.message.get().get("vampire-aura")+"", ""+plugin.message.get().get("vampire-aura-desc"), 50));
+        this.items.add(new Item(new ItemStack(Material.FEATHER), null, ChatColor.AQUA + "" + ChatColor.BOLD +plugin.message.get().get("vampire-jump")+"", ""+plugin.message.get().get("vampire-jump-desc"), 30));
+        this.items.add(new Item(new ItemStack(Material.SPONGE), null, ChatColor.RED + "" + ChatColor.BOLD +plugin.message.get().get("health-boost")+"", ""+plugin.message.get().get("health-boost-desc"), 30));
     }
     
     public void open(final Player player) {

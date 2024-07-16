@@ -1,6 +1,7 @@
 package com.tigerhix.vampirez;
 
 import com.tigerhix.vampirez.configs.Config;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -20,6 +21,8 @@ import org.bukkit.potion.PotionEffect;
 
 import java.util.ArrayList;
 import java.util.Objects;
+
+import static com.tigerhix.vampirez.Reason.AUTOMATIC;
 
 public class Listeners implements Listener {
 
@@ -87,6 +90,22 @@ public class Listeners implements Listener {
     @EventHandler
     public void onJoin(final PlayerJoinEvent evt) {
         Listeners.plugin.gamers.put(evt.getPlayer().getName(), new Gamer(Listeners.plugin, evt.getPlayer().getName()));
+        if (plugin.getConfig().getBoolean("proxy-mode")) {
+            try {
+                final String arena1 = plugin.arenas.entrySet().iterator().next().getKey();
+//            Game.join(Objects.requireNonNull(Utils.getArena(String.valueOf(this.arena))), Utils.getGamer(evt.getPlayer()));
+
+                if (Utils.getArena(arena1).gamers.size() == Config.maxPlayer) {
+                    evt.getPlayer().kickPlayer(ChatColor.RED + "" + plugin.message.get().get("full-arena") + " ("+ Utils.getArena(arena1).gamers.size() + "/" + Config.maxPlayer + ")");
+                }
+                else {
+                    Game.join(Utils.getArena(arena1), Utils.getGamer(evt.getPlayer()));
+                }
+            } catch (NullPointerException e) {
+                Game.leave(Utils.getGamer(evt.getPlayer()), AUTOMATIC);
+                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Error: " + e.getMessage());
+            }
+        }
     }
 
     @EventHandler
@@ -222,9 +241,9 @@ public class Listeners implements Listener {
                 player.setHealth(20);
                 player.getInventory().clear();
 
-                player.sendMessage("§a§l" + plugin.message.get().get("delimiter") + "\n\n");
+                player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + plugin.message.get().get("delimiter") + "\n\n");
                 player.sendMessage(ChatColor.GREEN + "[VampireZ] " + ChatColor.RED + "" + ChatColor.BOLD + "" + plugin.message.get().get("became-vampire") + ".");
-                player.sendMessage("§a§l" + plugin.message.get().get("delimiter") + "\n");
+                player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + plugin.message.get().get("delimiter") + "\n");
 
                 player.setInvisible(true);
                 gamer.cash = 0;
@@ -359,9 +378,9 @@ public class Listeners implements Listener {
         }
         if (evt.getMessage().length() < 8 || !evt.getMessage().substring(0, 8).equalsIgnoreCase("/vampire")) {
             evt.setCancelled(true);
-            evt.getPlayer().sendMessage("§a§l" + plugin.message.get().get("delimiter") + "\n\n");
+            evt.getPlayer().sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + plugin.message.get().get("delimiter") + "\n\n");
             evt.getPlayer().sendMessage(ChatColor.GREEN + "[VampireZ] " + ChatColor.RED + "" + plugin.message.get().get("impossible-use-command-now") + ". " + plugin.message.get().get("enter-command") + " " + ChatColor.AQUA + "/vampire leave" + ChatColor.RED + ", " + plugin.message.get().get("for-leave-arena") + ".");
-            evt.getPlayer().sendMessage("§a§l" + plugin.message.get().get("delimiter") + "\n");
+            evt.getPlayer().sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + plugin.message.get().get("delimiter") + "\n");
         }
     }
 

@@ -34,63 +34,63 @@ public class SurvivorShop implements Listener
         this.name = (String) plugin.message.get().get("shop");
         this.items = new ArrayList<Item>();
         this.enchants = new HashMap<Enchantment, Integer>();
-        this.items.add(new Item(new ItemStack(Material.WOODEN_SWORD), null, "§c§l" +plugin.message.get().get("wooden-sword")+"", null, 3));
-        this.items.add(new Item(new ItemStack(Material.STONE_SWORD), null, "§7§l"+plugin.message.get().get("stone-sword")+"", null, 10));
-        this.items.add(new Item(new ItemStack(Material.IRON_SWORD), null, "§f§l"+plugin.message.get().get("iron-sword")+"", null, 20));
+        this.items.add(new Item(new ItemStack(Material.WOODEN_SWORD), null, ChatColor.RED + "" + ChatColor.BOLD +plugin.message.get().get("wooden-sword")+"", null, 3));
+        this.items.add(new Item(new ItemStack(Material.STONE_SWORD), null, ChatColor.GRAY + "" + ChatColor.BOLD+plugin.message.get().get("stone-sword")+"", null, 10));
+        this.items.add(new Item(new ItemStack(Material.IRON_SWORD), null, ChatColor.WHITE + "" + ChatColor.BOLD+plugin.message.get().get("iron-sword")+"", null, 20));
         this.enchants.put(Enchantment.FIRE_ASPECT, 1);
-        this.items.add(new Item(new ItemStack(Material.WOODEN_SWORD), this.enchants, "§c§l"+plugin.message.get().get("blazing-blade")+"", null, 30));
-        this.items.add(new Item(new ItemStack(Material.STONE_SWORD), this.enchants, "§7§l"+plugin.message.get().get("lava-sword")+"", null, 50));
-        this.items.add(new Item(new ItemStack(Material.IRON_SWORD), this.enchants, "§f§l"+plugin.message.get().get("plasma-cutter")+"", null, 100));
+        this.items.add(new Item(new ItemStack(Material.WOODEN_SWORD), this.enchants, ChatColor.RED + "" + ChatColor.BOLD+plugin.message.get().get("blazing-blade")+"", null, 30));
+        this.items.add(new Item(new ItemStack(Material.STONE_SWORD), this.enchants, ChatColor.GRAY + "" + ChatColor.BOLD+plugin.message.get().get("lava-sword")+"", null, 50));
+        this.items.add(new Item(new ItemStack(Material.IRON_SWORD), this.enchants, ChatColor.WHITE + "" + ChatColor.BOLD+plugin.message.get().get("plasma-cutter")+"", null, 100));
         this.enchants.clear();
         this.enchants.put(Enchantment.KNOCKBACK, 1);
-        this.items.add(new Item(new ItemStack(Material.WOODEN_SWORD), this.enchants, "§c§l"+plugin.message.get().get("inflatable-bar")+"", null, 30));
-        this.items.add(new Item(new ItemStack(Material.STONE_SWORD), this.enchants, "§7§l"+plugin.message.get().get("pumice-sword")+"", null, 50));
-        this.items.add(new Item(new ItemStack(Material.IRON_SWORD), this.enchants, "§f§l"+plugin.message.get().get("steel-spring")+"", null, 100));
+        this.items.add(new Item(new ItemStack(Material.WOODEN_SWORD), this.enchants, ChatColor.RED + "" + ChatColor.BOLD+plugin.message.get().get("inflatable-bar")+"", null, 30));
+        this.items.add(new Item(new ItemStack(Material.STONE_SWORD), this.enchants, ChatColor.GRAY + "" + ChatColor.BOLD+plugin.message.get().get("pumice-sword")+"", null, 50));
+        this.items.add(new Item(new ItemStack(Material.IRON_SWORD), this.enchants, ChatColor.WHITE + "" + ChatColor.BOLD+plugin.message.get().get("steel-spring")+"", null, 100));
         this.enchants.clear();
         this.enchants.put(Enchantment.DAMAGE_ALL, 1);
-        this.items.add(new Item(new ItemStack(Material.WOODEN_SWORD), this.enchants, "§c§l"+plugin.message.get().get("piercing-shard")+"", null, 30));
-        this.items.add(new Item(new ItemStack(Material.STONE_SWORD), this.enchants, "§7§l"+plugin.message.get().get("stone-shard")+"", null, 50));
-        this.items.add(new Item(new ItemStack(Material.IRON_SWORD), this.enchants, "§f§l"+plugin.message.get().get("hardened-steel")+"", null, 100));
+        this.items.add(new Item(new ItemStack(Material.WOODEN_SWORD), this.enchants, ChatColor.RED + "" + ChatColor.BOLD+plugin.message.get().get("piercing-shard")+"", null, 30));
+        this.items.add(new Item(new ItemStack(Material.STONE_SWORD), this.enchants, ChatColor.GRAY + "" + ChatColor.BOLD+plugin.message.get().get("stone-shard")+"", null, 50));
+        this.items.add(new Item(new ItemStack(Material.IRON_SWORD), this.enchants, ChatColor.WHITE + "" + ChatColor.BOLD+plugin.message.get().get("hardened-steel")+"", null, 100));
         this.enchants.put(Enchantment.FIRE_ASPECT, 1);
-        this.items.add(new Item(new ItemStack(Material.IRON_SWORD), this.enchants, "§f§l"+plugin.message.get().get("tempered-piercing-shard")+"", null, 200));
+        this.items.add(new Item(new ItemStack(Material.IRON_SWORD), this.enchants, ChatColor.WHITE + "" + ChatColor.BOLD+plugin.message.get().get("tempered-piercing-shard")+"", null, 200));
         this.enchants.remove(Enchantment.FIRE_ASPECT);
         this.enchants.put(Enchantment.KNOCKBACK, 1);
-        this.items.add(new Item(new ItemStack(Material.IRON_SWORD), this.enchants, "§f§l"+plugin.message.get().get("tempered-stone-shard")+"", null, 200));
+        this.items.add(new Item(new ItemStack(Material.IRON_SWORD), this.enchants, ChatColor.WHITE + "" + ChatColor.BOLD+plugin.message.get().get("tempered-stone-shard")+"", null, 200));
         this.enchants.remove(Enchantment.DAMAGE_ALL);
         this.enchants.put(Enchantment.FIRE_ASPECT, 1);
-        this.items.add(new Item(new ItemStack(Material.IRON_SWORD), this.enchants, "§f§l"+plugin.message.get().get("tempered-plasma-cutter")+"", null, 200));
+        this.items.add(new Item(new ItemStack(Material.IRON_SWORD), this.enchants, ChatColor.WHITE + "" + ChatColor.BOLD+plugin.message.get().get("tempered-plasma-cutter")+"", null, 200));
         this.enchants.clear();
         this.enchants.put(Enchantment.DAMAGE_ALL, 1);
         this.enchants.put(Enchantment.KNOCKBACK, 1);
         this.enchants.put(Enchantment.FIRE_ASPECT, 1);
-        this.items.add(new Item(new ItemStack(Material.DIAMOND_SWORD), this.enchants, "§b§l"+plugin.message.get().get("sword-of-god")+"", null, 500));
-        this.items.add(new Item(new ItemStack(Material.LEATHER_HELMET), null, "§c§l"+plugin.message.get().get("leather-set")+"", null, 50));
-        this.items.add(new Item(new ItemStack(Material.IRON_HELMET), null, "§f§l"+plugin.message.get().get("iron-set")+"", null, 100));
+        this.items.add(new Item(new ItemStack(Material.DIAMOND_SWORD), this.enchants, ChatColor.AQUA + "" + ChatColor.BOLD+plugin.message.get().get("sword-of-god")+"", null, 500));
+        this.items.add(new Item(new ItemStack(Material.LEATHER_HELMET), null, ChatColor.RED + "" + ChatColor.BOLD+plugin.message.get().get("leather-set")+"", null, 50));
+        this.items.add(new Item(new ItemStack(Material.IRON_HELMET), null, ChatColor.WHITE + "" + ChatColor.BOLD+plugin.message.get().get("iron-set")+"", null, 100));
         this.enchants.clear();
         this.enchants.put(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
-        this.items.add(new Item(new ItemStack(Material.LEATHER_HELMET), this.enchants, "§c§l"+plugin.message.get().get("tempered-leather-set")+"", null, 175));
-        this.items.add(new Item(new ItemStack(Material.IRON_HELMET), this.enchants, "§f§l"+plugin.message.get().get("tempered-iron-set")+"", null, 350));
+        this.items.add(new Item(new ItemStack(Material.LEATHER_HELMET), this.enchants, ChatColor.RED + "" + ChatColor.BOLD+plugin.message.get().get("tempered-leather-set")+"", null, 175));
+        this.items.add(new Item(new ItemStack(Material.IRON_HELMET), this.enchants, ChatColor.WHITE + "" + ChatColor.BOLD+plugin.message.get().get("tempered-iron-set")+"", null, 350));
         this.enchants.clear();
         this.enchants.put(Enchantment.THORNS, 1);
-        this.items.add(new Item(new ItemStack(Material.LEATHER_HELMET), this.enchants, "§c§l"+plugin.message.get().get("spiked-leather-set")+"", null, 150));
-        this.items.add(new Item(new ItemStack(Material.IRON_HELMET), this.enchants, "§f§l"+plugin.message.get().get("spiked-iron-set")+"", null, 350));
+        this.items.add(new Item(new ItemStack(Material.LEATHER_HELMET), this.enchants, ChatColor.RED + "" + ChatColor.BOLD+plugin.message.get().get("spiked-leather-set")+"", null, 150));
+        this.items.add(new Item(new ItemStack(Material.IRON_HELMET), this.enchants, ChatColor.WHITE + "" + ChatColor.BOLD+plugin.message.get().get("spiked-iron-set")+"", null, 350));
         this.enchants.clear();
         this.enchants.put(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
         this.enchants.put(Enchantment.THORNS, 1);
-        this.items.add(new Item(new ItemStack(Material.DIAMOND_HELMET), this.enchants, "§b§l"+plugin.message.get().get("good-set")+"", null, 2000));
-        this.items.add(new Item(new ItemStack(Material.BAKED_POTATO), null, "§6§l"+plugin.message.get().get("student-snack")+"", null, 5));
-        this.items.add(new Item(new ItemStack(Material.MELON), null, "§6§l"+plugin.message.get().get("tropical-resort")+"", null, 5));
-        this.items.add(new Item(new ItemStack(Material.COOKED_CHICKEN), null, "§6§l"+plugin.message.get().get("take-out")+"", null, 10));
-        this.items.add(new Item(new ItemStack(Material.COOKED_PORKCHOP), null, "§6§l"+plugin.message.get().get("pig-out")+"", null, 10));
-        this.items.add(new Item(new ItemStack(Material.PUMPKIN_PIE), null, "§6§l"+plugin.message.get().get("homemade-food")+"", null, 10));
-        this.items.add(new Item(new ItemStack(Material.GOLDEN_APPLE), null, "§6§l"+plugin.message.get().get("food-of-the-gods")+"", null, 100));
-        this.items.add(new Item(new ItemStack(new Potion(PotionType.INSTANT_HEAL).toItemStack(2)), null, "§4§l"+plugin.message.get().get("health-potion")+"", null, 20));
-        this.items.add(new Item(new ItemStack(new Potion(PotionType.REGEN).toItemStack(1)), null, "§4§l"+plugin.message.get().get("health-regeneration")+"", null, 50));
-        this.items.add(new Item(new ItemStack(new Potion(PotionType.STRENGTH).toItemStack(1)), null, "§4§l"+plugin.message.get().get("potion-of-the-god")+"", null, 200));
+        this.items.add(new Item(new ItemStack(Material.DIAMOND_HELMET), this.enchants, ChatColor.AQUA + "" + ChatColor.BOLD+plugin.message.get().get("good-set")+"", null, 2000));
+        this.items.add(new Item(new ItemStack(Material.BAKED_POTATO), null, ChatColor.GOLD + "" + ChatColor.BOLD+plugin.message.get().get("student-snack")+"", null, 5));
+        this.items.add(new Item(new ItemStack(Material.MELON), null, ChatColor.GOLD + "" + ChatColor.BOLD+plugin.message.get().get("tropical-resort")+"", null, 5));
+        this.items.add(new Item(new ItemStack(Material.COOKED_CHICKEN), null, ChatColor.GOLD + "" + ChatColor.BOLD+plugin.message.get().get("take-out")+"", null, 10));
+        this.items.add(new Item(new ItemStack(Material.COOKED_PORKCHOP), null, ChatColor.GOLD + "" + ChatColor.BOLD+plugin.message.get().get("pig-out")+"", null, 10));
+        this.items.add(new Item(new ItemStack(Material.PUMPKIN_PIE), null, ChatColor.GOLD + "" + ChatColor.BOLD+plugin.message.get().get("homemade-food")+"", null, 10));
+        this.items.add(new Item(new ItemStack(Material.GOLDEN_APPLE), null, ChatColor.GOLD + "" + ChatColor.BOLD+plugin.message.get().get("food-of-the-gods")+"", null, 100));
+        this.items.add(new Item(new ItemStack(new Potion(PotionType.INSTANT_HEAL).toItemStack(2)), null, ChatColor.DARK_RED + "" + ChatColor.BOLD+plugin.message.get().get("health-potion")+"", null, 20));
+        this.items.add(new Item(new ItemStack(new Potion(PotionType.REGEN).toItemStack(1)), null, ChatColor.DARK_RED + "" + ChatColor.BOLD+plugin.message.get().get("health-regeneration")+"", null, 50));
+        this.items.add(new Item(new ItemStack(new Potion(PotionType.STRENGTH).toItemStack(1)), null, ChatColor.DARK_RED + "" + ChatColor.BOLD+plugin.message.get().get("potion-of-the-god")+"", null, 200));
     }
     
     public void open(final Player player) {
-        final Inventory shopInventory = this.plugin.getServer().createInventory((InventoryHolder)player, 45, this.name);
+        final Inventory shopInventory = this.plugin.getServer().createInventory(player, 45, this.name);
         for (int i = 0; i < this.items.size(); ++i) {
             if (this.items.get(i) != null) {
                 shopInventory.setItem(i, this.items.get(i).getItem());
@@ -98,7 +98,7 @@ public class SurvivorShop implements Listener
         }
         player.openInventory(shopInventory);
     }
-    
+
     @SuppressWarnings({ "rawtypes", "unchecked", "deprecation" })
 	@EventHandler
     public void onClickInventory(final InventoryClickEvent evt) {

@@ -8,10 +8,12 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scoreboard.*;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.*;
 
 import static com.tigerhix.vampirez.Reason.INITIATIVE;
@@ -28,14 +30,14 @@ public class Game {
         Game.random = new Random();
     }
 
-    public static void scoreboardgame(ScoreboardManager manager, final Player player, final Arena arena, final int playersize) {
+    public static void scoreboardGame(ScoreboardManager manager, final Player player, final Arena arena, final int playersize) {
 
 
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Game.plugin, new Runnable() {
             public void run() {
                 Scoreboard board = manager.getNewScoreboard();
                 Objective objective = board.registerNewObjective("Infogame", "dummy");
-                objective.setDisplayName("§c§lVampireZ");
+                objective.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + "VampireZ");
                 objective.setDisplaySlot(DisplaySlot.SIDEBAR);
                 player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
 
@@ -44,17 +46,17 @@ public class Game {
                     player.setScoreboard(board);
                 }
 
-                Score space2 = objective.getScore(ChatColor.WHITE + "§r");
+                Score space2 = objective.getScore(ChatColor.WHITE + "" + ChatColor.RESET);
                 space2.setScore(10);
-                Score score = objective.getScore("§f" + plugin.message.get().get("map-name") + ": " + "§2" + namearena); //Get a fake offline player
+                Score score = objective.getScore(ChatColor.WHITE + "" + plugin.message.get().get("map-name") + ": " + ChatColor.DARK_GREEN + namearena); //Get a fake offline player
                 score.setScore(9);
-                Score score2 = objective.getScore("§f" + plugin.message.get().get("players") + ": " + "§2" + arena.gamers.size() + "§f/§2" + Config.maxPlayer); //Get a fake offline player
+                Score score2 = objective.getScore(ChatColor.WHITE + "" + plugin.message.get().get("players") + ": " + ChatColor.DARK_GREEN + arena.gamers.size() + ChatColor.WHITE +"/" + ChatColor.DARK_GREEN + Config.maxPlayer); //Get a fake offline player
                 score2.setScore(8);
-                Score space = objective.getScore(ChatColor.WHITE + "§f");
+                Score space = objective.getScore(ChatColor.WHITE + " ");
                 space.setScore(7);
-                Score score3 = objective.getScore("§f" + plugin.message.get().get("sign-waiting") + " ... "); //Get a fake offline player
+                Score score3 = objective.getScore(ChatColor.WHITE + "" + plugin.message.get().get("sign-waiting") + " ... "); //Get a fake offline player
                 score3.setScore(6);
-                Score space4 = objective.getScore(ChatColor.WHITE + "§2");
+                Score space4 = objective.getScore(ChatColor.WHITE + " ");
                 space4.setScore(5);
             }
         }, 5L);
@@ -97,12 +99,12 @@ public class Game {
 
 
 
-            scoreboardgame(Bukkit.getScoreboardManager(), gamer.getPlayer(), arena, arena.gamers.size());
-            player.sendMessage("§a§l" + plugin.message.get().get("delimiter") + "");
-            player.sendMessage("§a§l");
+            scoreboardGame(Bukkit.getScoreboardManager(), gamer.getPlayer(), arena, arena.gamers.size());
+            player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + plugin.message.get().get("delimiter"));
+            player.sendMessage(ChatColor.GREEN + " ");
             player.sendMessage(ChatColor.GREEN + "[VampireZ] " + ChatColor.GOLD + plugin.message.get().get("you-are-joined") + " " + plugin.message.get().get("map-name") + " " + ChatColor.GREEN + "\"" + namearena + "\"");
-            player.sendMessage("§a§l");
-            player.sendMessage("§a§l" + plugin.message.get().get("delimiter") + "\n");
+            player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD);
+            player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + plugin.message.get().get("delimiter") + "\n");
             if (arena.gamers.size() == Config.minPlayer) {
                 ready(arena, Config.minSeconds);
             }
@@ -149,17 +151,31 @@ public class Game {
         worldName.setGameRule(GameRule.SHOW_DEATH_MESSAGES, true);
         worldName.setDifficulty(Difficulty.PEACEFUL);
 
-        player.teleport((Game.lobby == null) ? Bukkit.getWorlds().get(0).getSpawnLocation() : Game.lobby, PlayerTeleportEvent.TeleportCause.COMMAND);
         for (final PotionEffect effect : player.getActivePotionEffects()) {
             player.removePotionEffect(effect.getType());
         }
         if (!reason.equals(Reason.AUTOMATIC)) {
-            player.sendMessage("§a§l" + plugin.message.get().get("delimiter") + "");
-            player.sendMessage("§a§l");
+            player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + plugin.message.get().get("delimiter"));
+            player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD);
             player.sendMessage(ChatColor.GREEN + "[VampireZ] " + ChatColor.GOLD + plugin.message.get().get("you-left-the-game"));
-            player.sendMessage("§a§l");
-            player.sendMessage("§a§l" + plugin.message.get().get("delimiter") + "\n");
+            player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD);
+            player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + plugin.message.get().get("delimiter") + "\n");
         }
+        if (plugin.getConfig().getBoolean("proxy-mode")) {
+            ByteArrayOutputStream b = new ByteArrayOutputStream();
+            DataOutputStream out = new DataOutputStream(b);
+            try {
+                out.writeUTF("Connect");
+                out.writeUTF(plugin.getConfig().getString("proxy-main-server"));
+            } catch (IOException eee) {
+                Bukkit.getConsoleSender().sendMessage(eee.getMessage());
+            }
+            Bukkit.getPlayer(player.getUniqueId()).sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
+//            player.kickPlayer(ChatColor.GREEN + "[VampireZ] " + ChatColor.GOLD + plugin.message.get().get("you-left-the-game"));
+        } else {
+            player.teleport((Game.lobby == null) ? Bukkit.getWorlds().get(0).getSpawnLocation() : Game.lobby, PlayerTeleportEvent.TeleportCause.COMMAND);
+        }
+
         if (arena.gamers.size() == 0) {
             arena.stopTimer();
             arena.reset();
@@ -222,9 +238,9 @@ public class Game {
             gamer.gameStarted = true;
             final Player player = gamer.getPlayer();
             if (!gamer.alive) {
-                gamer.sendMessage("§a§l" + plugin.message.get().get("delimiter") + "\n\n");
+                gamer.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + plugin.message.get().get("delimiter") + "\n\n");
                 gamer.sendMessage(ChatColor.GREEN + "[VampireZ] " + ChatColor.RED + ChatColor.BOLD + plugin.message.get().get("you-are-vampire"));
-                gamer.sendMessage("§a§l" + plugin.message.get().get("delimiter") + "\n");
+                gamer.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + plugin.message.get().get("delimiter") + "\n");
                 gamer.addCash(40);
 
                 try {
@@ -240,9 +256,9 @@ public class Game {
                 player.getInventory().setChestplate(ItemTemplate.VAMPIRE_CLOTH.getItem());
                 player.setFoodLevel(20);
             } else {
-                gamer.sendMessage("§a§l" + plugin.message.get().get("delimiter") + "\n\n");
+                gamer.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + plugin.message.get().get("delimiter") + "\n\n");
                 gamer.sendMessage(ChatColor.GREEN + "[VampireZ] " + ChatColor.RED + ChatColor.BOLD + plugin.message.get().get("you-are-alive"));
-                gamer.sendMessage("§a§l" + plugin.message.get().get("delimiter") + "\n");
+                gamer.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + plugin.message.get().get("delimiter") + "\n");
                 gamer.addCash(10);
 
                 try {
@@ -390,7 +406,7 @@ public class Game {
                         plugin.message.get().get("game-over") + " " +
                         arena.getWinningTeam().substring(0, 1).toUpperCase() +
                         arena.getWinningTeam().substring(1) + " " +
-                        plugin.message.get().get("won") + "\n§a§l\n" +
+                        plugin.message.get().get("won") + "\n"+ ChatColor.GREEN + ChatColor.BOLD + "\n" +
                         ChatColor.BOLD + ChatColor.RED + plugin.message.get().get("game-stats") + "\n" +
                         stats
 
