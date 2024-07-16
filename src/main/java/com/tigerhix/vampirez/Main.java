@@ -9,11 +9,13 @@ import com.tigerhix.vampirez.configs.StatsConfig;
 import com.tigerhix.vampirez.lib.ItemMessage;
 import com.tigerhix.vampirez.lib.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.bukkit.scoreboard.ScoreboardManager;
 
 import java.io.BufferedReader;
@@ -25,7 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Main extends JavaPlugin
+public class Main extends JavaPlugin implements PluginMessageListener
 {
     public ScoreboardManager sm;
     public ItemMessage messenger;
@@ -108,24 +110,25 @@ public class Main extends JavaPlugin
     }
 
     public void onEnable() {
-    	
-    	Bukkit.getConsoleSender().sendMessage("§c========================================");
-    	Bukkit.getConsoleSender().sendMessage("§c			Enabling VAMPIREZ			");
-    	Bukkit.getConsoleSender().sendMessage("§c========================================");
+        this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", this);
+    	Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "========================================");
+    	Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "			Enabling VAMPIREZ			");
+    	Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "========================================");
         PluginDescriptionFile file = this.getDescription();
         try {
             String version1 = file.getVersion().replace("-RELEASE", "");
             String version2 = getSpigotVersion().replace("-RELEASE", "");
 
             boolean isNewer = isVersionNewer(version2, version1);
-//            Bukkit.getConsoleSender().sendMessage("§c" + version2);
-//            Bukkit.getConsoleSender().sendMessage("§c" + version1);
+//            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "" + version2);
+//            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "" + version1);
 
             if (isNewer) {
-                Bukkit.getConsoleSender().sendMessage("§c========================================");
-                Bukkit.getConsoleSender().sendMessage("§c			VAMPIREZ UPDATE FOUND:       ");
-                Bukkit.getConsoleSender().sendMessage("§c			NEW VERSION: "+version2+"                ");
-                Bukkit.getConsoleSender().sendMessage("§c========================================");
+                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "========================================");
+                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "			VAMPIREZ UPDATE FOUND:       ");
+                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "			NEW VERSION: "+version2+"                ");
+                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "========================================");
             }
 
         } catch (IOException e) {
@@ -148,9 +151,7 @@ public class Main extends JavaPlugin
         try {
             Metrics metrics = new Metrics(this, pluginId);
 
-            metrics.addCustomChart(new Metrics.SingleLineChart("players", () -> {
-                return Bukkit.getOnlinePlayers().size();
-            }));
+            metrics.addCustomChart(new Metrics.SingleLineChart("players", () -> Bukkit.getOnlinePlayers().size()));
 
         } catch (Exception e) {
             Bukkit.getConsoleSender().sendMessage("bStats failed, maybe it disabled.");
@@ -158,7 +159,7 @@ public class Main extends JavaPlugin
 
 
         String version_server = Utils.getServerVersion();
-        Bukkit.getConsoleSender().sendMessage("§cDetected server version: " + version_server);
+        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Detected server version: " + version_server);
 //        Check if messages.yml is empty
 
         if(!message.disabled) {
@@ -180,12 +181,12 @@ public class Main extends JavaPlugin
             for (final Player player : this.getServer().getOnlinePlayers()) {
                 this.gamers.put(player.getName(), new Gamer(this, player.getName()));
             }
-            Bukkit.getConsoleSender().sendMessage("§cEnabled arenas:");
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Enabled arenas:");
             int i = 1;
             for (final String name : this.getConfig().getStringList("arenas.enabled-arenas")) {
                 Arena arena = new Arena(this, name);
                 this.arenas.put(name, arena);
-                Bukkit.getConsoleSender().sendMessage("§c" + i+". " +name+ "");
+                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "" + i+". " +name+ "");
                 i++;
             }
 
@@ -200,15 +201,22 @@ public class Main extends JavaPlugin
 
     }
     public void onDisable() {
+        //make sure to unregister the registered channels in case of a reload
+        this.getServer().getMessenger().unregisterOutgoingPluginChannel(this);
+        this.getServer().getMessenger().unregisterIncomingPluginChannel(this);
     	this.reloadConfig();
-        Bukkit.getConsoleSender().sendMessage("§c========================================");
-        Bukkit.getConsoleSender().sendMessage("§c			Disabling VAMPIREZ			");
-        Bukkit.getConsoleSender().sendMessage("§c========================================");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "========================================");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "			Disabling VAMPIREZ			");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "========================================");
         if (isCurrentlyReloading()) {
-            Bukkit.getConsoleSender().sendMessage("§c========================================");
-            Bukkit.getConsoleSender().sendMessage("§c	   DON`T USE /RELOAD COMMAND!        ");
-            Bukkit.getConsoleSender().sendMessage("§c	   YOU CAN GET UNEXPECTED ERRORS.    ");
-            Bukkit.getConsoleSender().sendMessage("§c========================================");
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "========================================");
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "	   DON`T USE /RELOAD COMMAND!        ");
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "	   YOU CAN GET UNEXPECTED ERRORS.    ");
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "========================================");
         }
+    }
+
+    @Override
+    public void onPluginMessageReceived(String channel, Player player, byte[] message) {
     }
 }

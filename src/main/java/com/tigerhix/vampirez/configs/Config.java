@@ -7,6 +7,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class Config
 {
@@ -42,21 +43,34 @@ public class Config
             plugin.saveConfig();
         }
 
+        plugin.getConfig().addDefault("proxy-mode", false);
+        plugin.getConfig().addDefault("proxy-main-server", "hub");
+
         Config.minSeconds = plugin.getConfig().getInt("general.seconds.min");
         Config.maxSeconds = plugin.getConfig().getInt("general.seconds.max");
         Config.signStyle = 2;
-        Config.waitingText = ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "- "+plugin.message.get().get("sign-waiting") + " -";
-        Config.startedText = ChatColor.DARK_RED + "" + ChatColor.BOLD + "- "+plugin.message.get().get("sign-started") + " -";
+        Config.waitingText = ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "- " + plugin.message.get().get("sign-waiting") + " -";
+        Config.startedText = ChatColor.DARK_RED + "" + ChatColor.BOLD + "- " + plugin.message.get().get("sign-started") + " -";
         Config.roomText = ChatColor.BOLD + "- %id% -";
-        (Config.survivorEffects = new ArrayList<>()).add(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0));
-        Config.survivorEffects.add(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 0));
-        Config.survivorEffects.add(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 0));
-        (Config.waveEffects = new ArrayList<>()).add(new PotionEffect(PotionEffectType.REGENERATION, 100, 1));
-        Config.waveEffects.add(new PotionEffect(PotionEffectType.CONFUSION, 300, 0));
-        (Config.vampireEffects = new ArrayList<>()).add(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1));
-        Config.vampireEffects.add(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 0));
-        Config.vampireEffects.add(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0));
+
+        List<PotionEffect> survivorEffects = new ArrayList<>();
+        survivorEffects.add(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0));
+        survivorEffects.add(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 0));
+        survivorEffects.add(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 0));
+        Config.survivorEffects = survivorEffects;
+
+        List<PotionEffect> waveEffects = new ArrayList<>();
+        waveEffects.add(new PotionEffect(PotionEffectType.REGENERATION, 100, 1));
+        waveEffects.add(new PotionEffect(PotionEffectType.CONFUSION, 300, 0));
+        Config.waveEffects = waveEffects;
+
+        List<PotionEffect> vampireEffects = new ArrayList<>();
+        vampireEffects.add(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1));
+        vampireEffects.add(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 0));
+        vampireEffects.add(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0));
+        Config.vampireEffects = vampireEffects;
         Config.punch = false;
+
 
 
         plugin.getConfig().addDefault("mysql.enabled", false);

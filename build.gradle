@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'com.tigerhix'
-version = '4.0.3-RELEASE'
+version = '4.0.5-RELEASE'
 
 repositories {
     mavenCentral()
