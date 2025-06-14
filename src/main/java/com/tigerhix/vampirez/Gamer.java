@@ -92,9 +92,9 @@ public class Gamer
     
     public void addCash(final int amount) {
         this.cash += amount;
-//        Bukkit.getConsoleSender().sendMessage("§cCash:"+this.cash);
+//        Bukkit.getConsoleSender().sendMessage("Â§cCash:"+this.cash);
         this.plugin.messenger.sendMessage(this.getPlayer(), (this.alive ? ChatColor.GOLD : ChatColor.DARK_RED) + "" + ChatColor.BOLD + "+" + amount + " " + (this.alive ? plugin.message.get().get("gold-1") : plugin.message.get().get("blood-1")), 3);
-//        Bukkit.getConsoleSender().sendMessage("§cMessage:" +(this.alive ? ChatColor.GOLD : ChatColor.DARK_RED) + "" + ChatColor.BOLD + "+" + amount + " " + (this.alive ? plugin.message.get().get("gold-1") : plugin.message.get().get("blood-1")));
+//        Bukkit.getConsoleSender().sendMessage("Â§cMessage:" +(this.alive ? ChatColor.GOLD : ChatColor.DARK_RED) + "" + ChatColor.BOLD + "+" + amount + " " + (this.alive ? plugin.message.get().get("gold-1") : plugin.message.get().get("blood-1")));
 
     }
     

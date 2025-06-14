@@ -304,7 +304,7 @@ public class Game {
             arena.timeLeft = 20;
         }
         if (arena.wave != 20) {
-            arena.broadcast(ChatColor.GREEN + "[VampireZ] " + ChatColor.GOLD + plugin.message.get().get("wave") + " ¹" + arena.wave + ". " + arena.timeLeft + " " + plugin.message.get().get("seconds") + " " + plugin.message.get().get("before-the-next-wave") + "");
+            arena.broadcast(ChatColor.GREEN + "[VampireZ] " + ChatColor.GOLD + plugin.message.get().get("wave") + " â„–" + arena.wave + ". " + arena.timeLeft + " " + plugin.message.get().get("seconds") + " " + plugin.message.get().get("before-the-next-wave") + "");
         } else {
             arena.broadcast(ChatColor.GREEN + "[VampireZ] " + ChatColor.GOLD + plugin.message.get().get("last-wave"));
         }

@@ -38,7 +38,7 @@ public class Sign implements Listener
         if (!enabledArenas1.contains(this.arena.name)) {
         	Utils.getArena(this.arena.name).status = "disabled";
         }else {
-        	//Bukkit.getConsoleSender().sendMessage("§6" + this.arena.name);	
+        	//Bukkit.getConsoleSender().sendMessage("Â§6" + this.arena.name);	
         }
 
         this.block = block;
@@ -127,7 +127,7 @@ public class Sign implements Listener
             return;
         }
         if (this.arena.status.equals("disabled")) {
-            //evt.getPlayer().sendMessage(ChatColor.GREEN+"[VampireZ] " + ChatColor.RED + "Àğåíà îòêëş÷åíà!");
+            //evt.getPlayer().sendMessage(ChatColor.GREEN+"[VampireZ] " + ChatColor.RED + "ĞÑ€ĞµĞ½Ğ° Ğ¾Ñ‚ĞºĞ»ÑÑ‡ĞµĞ½Ğ°!");
             return;
         }
         if (this.arena.gamers.size() == Config.maxPlayer) {

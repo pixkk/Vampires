@@ -31,7 +31,7 @@ public class Commands implements CommandExecutor
 //                final String action = args[0];
 //                if (action.equalsIgnoreCase("reload")) {
 //                    this.plugin.getMessagesConfig().reloadconf();
-//                    Bukkit.getConsoleSender().sendMessage("§4§l[VampireZ] Plugin reloaded!");
+//                    Bukkit.getConsoleSender().sendMessage("&4&l[VampireZ] Plugin reloaded!");
 //                    return true;
 //
 //                }
