@@ -37,11 +37,13 @@ jobs:
     - name: Get jar name
       id: get_jar_name
       run: |
-        JAR_NAME=$(basename target/*.jar)
+        JAR_NAME=$(basename $(ls target/*.jar | grep -v original))
         echo "jar_name=${JAR_NAME}" >> $GITHUB_OUTPUT
         
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: ${{ steps.get_jar_name.outputs.jar_name }}
-        path: target/*.jar
+        path: |
+          target/*.jar
+          !target/*original*.jar
