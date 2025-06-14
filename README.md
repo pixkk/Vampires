@@ -315,6 +315,16 @@ signs:
   ```
 </details>
 
+## How to use proxy mode:
+1. Create arena (optional)
+2. Set proxy-mode as "true" and proxy-main-server as "YOUR_HUB_OR_SERVER_NAME"  
+![image](https://github.com/user-attachments/assets/563c4de8-97fb-4935-bd1b-9e26a4a664e7)
+3. Change order of arenas list. First arena in list - main arena for proxy mode (on the screen it is NewArea).  
+![image](https://github.com/user-attachments/assets/a590184e-68b5-4edd-a3d7-6b0f82df4621)
+4. Restart (NOT RELOAD) server.
+
+If you entered the wrong server name, you cannot be kicked after the game.
+
 ## Todo
 
 - ~~transfer player stats in another file~~ 
