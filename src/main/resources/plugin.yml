@@ -2,7 +2,7 @@ name: VampireZ
 version: '${version}'
 main: com.tigerhix.vampirez.Main
 api-version: '1.16'
-depend: [ProtocolLib]
+depend: []
 authors: [TigerHix, Repack by pixkk]
 description: Vampires and survivors. Who gonna win?
 commands:

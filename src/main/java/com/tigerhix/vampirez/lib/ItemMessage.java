@@ -1,6 +1,5 @@
 package com.tigerhix.vampirez.lib;
 
-import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -29,10 +28,10 @@ public class ItemMessage
     
     public ItemMessage(final Plugin plugin) {
         this.formats = new String[] { "%s", " %s " };
-        final Plugin p = Bukkit.getPluginManager().getPlugin("ProtocolLib");
-        if (p == null || !p.isEnabled()) {
-            throw new IllegalStateException("ItemMessage can not be used without ProtocolLib");
-        }
+//        final Plugin p = Bukkit.getPluginManager().getPlugin("ProtocolLib");
+//        if (p == null || !p.isEnabled()) {
+//            throw new IllegalStateException("ItemMessage can not be used without ProtocolLib");
+//        }
         this.plugin = plugin;
     }
     
@@ -53,9 +52,9 @@ public class ItemMessage
     }
     
     public void setFormats(final String f1, final String f2) {
-        Validate.isTrue(!f1.equals(f2), "format strings must be different");
-        Validate.isTrue(f1.contains("%s"), "format string 1 must contain a %s");
-        Validate.isTrue(f2.contains("%s"), "format string 2 must contain a %s");
+//        Validate.isTrue(!f1.equals(f2), "format strings must be different");
+//        Validate.isTrue(f1.contains("%s"), "format string 1 must contain a %s");
+//        Validate.isTrue(f2.contains("%s"), "format string 2 must contain a %s");
         this.formats[0] = f1;
         this.formats[1] = f2;
     }
