@@ -21,6 +21,7 @@ import org.bukkit.potion.PotionEffect;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Random;
 
 import static com.tigerhix.vampirez.Reason.AUTOMATIC;
 
@@ -187,7 +188,7 @@ public class Listeners implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerDamageByFire(EntityDamageEvent evt) {
-        damageFunction(evt);
+//        damageFunction(evt);
     }
 
     private void damageFunction(EntityDamageEvent evt) {
@@ -212,6 +213,24 @@ public class Listeners implements Listener {
             final Arena arena = gamer.playing;
             if (gamer.alive) {
                 gamer.alive = false;
+
+
+                try {
+
+                    Random rand = new Random();
+                    Gamer randomAlivePlayer = arena.getSurvivors().get(rand.nextInt(arena.getSurvivors().size()));
+                    int count = 0;
+                    for (Entity entity : arena.zombies) {
+                        while (!randomAlivePlayer.alive) {
+                            if (count > arena.getSurvivors().size()) break;
+                            randomAlivePlayer = arena.getGamers().get(rand.nextInt(arena.getSurvivors().size()));
+                            count++;
+                        }
+                        ((Zombie) entity).setTarget(randomAlivePlayer.getPlayer());
+                    }
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
                 if (player.getKiller() == null) {
                     arena.broadcast(ChatColor.GREEN + "[VampireZ] " + ChatColor.RED + gamer.getDisplayName() + " " + plugin.message.get().get("id-dead") + ". " + plugin.message.get().get("gamers-left") + " " + arena.getSurvivors().size() + " " + plugin.message.get().get("survivors-2") + "" + ((arena.getSurvivors().size() < 2) ? "" : ""));
                 } else {
@@ -429,27 +448,29 @@ public class Listeners implements Listener {
         if (!(evt.getEntity() instanceof Player)) {
             return;
         }
+        if (!(evt.getDamager() instanceof Player)) {
+            return;
+        }
         boolean isPlayingDamager = Utils.getGamer((Player) evt.getDamager()).playing != null;
         boolean isPlayingEntity = Utils.getGamer((Player) evt.getEntity()).playing != null;
 
         if ((isPlayingDamager)) {
 
             if (Utils.getGamer((Player) evt.getDamager()) == null) {
-                return;
+                evt.setCancelled(true);
             }
             if (Utils.getGamer((Player) evt.getDamager()).playing == null) {
-                return;
+                evt.setCancelled(true);
             }
             if (Utils.getGamer((Player) evt.getEntity()) == null) {
-                return;
+                evt.setCancelled(true);
             }
             if (Utils.getGamer((Player) evt.getEntity()).playing == null) {
                 evt.setCancelled(true);
             }
-            if (Utils.getGamer((Player) evt.getDamager()).alive != Utils.getGamer((Player) evt.getEntity()).alive) {
-                return;
+            if (Utils.getGamer((Player) evt.getDamager()).alive == Utils.getGamer((Player) evt.getEntity()).alive) {
+                evt.setCancelled(true);
             }
-            evt.setCancelled(true);
         }
     }
 
@@ -521,25 +542,46 @@ public class Listeners implements Listener {
     public void onTargetVampire(final EntityTargetLivingEntityEvent evt) {
         Entity target = evt.getTarget();
 
-        if (target instanceof Player && evt.getEntity() instanceof Player) {
-            if (!Utils.getGamer((Player) evt.getEntity()).alive && Utils.getGamer((Player) evt.getEntity()).gameStarted) {;
-                evt.setCancelled(true);
+        if (!(target instanceof Player)) {
+            evt.setCancelled(true);
+            return;
+        }
+        if (Utils.getGamer((Player) target).playing != null) {
+            Arena arena = Utils.getGamer((Player) target).playing;
+            if (evt.getEntity() instanceof Zombie) {
+                if (!Utils.getGamer((Player) target).alive) {
+                    try {
+
+                        Random rand = new Random();
+                        Gamer randomAlivePlayer = arena.getSurvivors().get(rand.nextInt(arena.getSurvivors().size()));
+                        int count = 0;
+                        for (Entity entity : arena.zombies) {
+                            while (!randomAlivePlayer.alive) {
+                                if (count > arena.getSurvivors().size()) break;
+                                randomAlivePlayer = arena.getGamers().get(rand.nextInt(arena.getSurvivors().size()));
+                                count++;
+                            }
+                            ((Zombie) entity).setTarget(randomAlivePlayer.getPlayer());
+                            randomAlivePlayer = arena.getGamers().get(rand.nextInt(arena.getSurvivors().size()));
+                        }
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                return;
             }
-            return;
+            if (Utils.getGamer((Player) target) == null) {
+                return;
+            }
+            if (Utils.getGamer((Player) target).playing == null) {
+                return;
+            }
+            if (Utils.getGamer((Player) target).alive) {
+                return;
+            }
+            evt.setCancelled(true);
         }
-        if (!(evt.getTarget() instanceof Player)) {
-            return;
-        }
-        if (Utils.getGamer((Player) evt.getTarget()) == null) {
-            return;
-        }
-        if (Utils.getGamer((Player) evt.getTarget()).playing == null) {
-            return;
-        }
-        if (Utils.getGamer((Player) evt.getTarget()).alive) {
-            return;
-        }
-        evt.setCancelled(true);
+
     }
 
     @EventHandler
@@ -618,7 +660,7 @@ public class Listeners implements Listener {
             return;
         }
         boolean isPlayingEntity = Utils.getGamer((Player) evt.getEntity()).playing != null;
-        if (isPlayingEntity && (evt.getEntity() instanceof Player)) {
+        if (isPlayingEntity && (evt.getEntity() instanceof Player) && evt.getCause() == EntityDamageEvent.DamageCause.FALL) {
             if (Utils.getGamer((Player) evt.getEntity()).playing != null) {
                 evt.setCancelled(true);
                 return;
@@ -644,6 +686,9 @@ public class Listeners implements Listener {
         Entity target = event.getTarget();
 
         if (target instanceof Player) {
+            if (!Utils.getGamer((Player) target).alive) {
+                event.setCancelled(true);
+            }
             if (!Utils.getGamer((Player) target).alive && Utils.getGamer((Player) target).gameStarted) {
                 event.setCancelled(true);
             }
