@@ -89,7 +89,7 @@ public class Game {
             World worldName = player.getLocation().getWorld();
             worldName.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
             worldName.setGameRule(GameRule.SHOW_DEATH_MESSAGES, false);
-            worldName.setDifficulty(Difficulty.PEACEFUL);
+//            worldName.setDifficulty(Difficulty.PEACEFUL);
 
             player.getInventory().setItem(8, ItemTemplate.SLIME_BALL.getItem());
             player.setExp(0.0f);
@@ -149,7 +149,7 @@ public class Game {
         World worldName = player.getLocation().getWorld();
         worldName.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, false);
         worldName.setGameRule(GameRule.SHOW_DEATH_MESSAGES, true);
-        worldName.setDifficulty(Difficulty.PEACEFUL);
+//        worldName.setDifficulty(Difficulty.PEACEFUL);
 
         for (final PotionEffect effect : player.getActivePotionEffects()) {
             player.removePotionEffect(effect.getType());
