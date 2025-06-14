@@ -205,6 +205,14 @@ public class Main extends JavaPlugin implements PluginMessageListener
         this.getServer().getMessenger().unregisterOutgoingPluginChannel(this);
         this.getServer().getMessenger().unregisterIncomingPluginChannel(this);
     	this.reloadConfig();
+
+        arenas.forEach((s, arena) -> {
+            for (final Gamer gamer : arena.gamers) {
+                gamer.save();
+                Game.leave(gamer, Reason.AUTOMATIC);
+                arena.reset();
+            }
+        });
         Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "========================================");
         Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "			Disabling VAMPIREZ			");
         Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "========================================");
