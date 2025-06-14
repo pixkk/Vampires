@@ -426,25 +426,31 @@ public class Listeners implements Listener {
 
     @EventHandler
     public void onDamageTeammate(final EntityDamageByEntityEvent evt) {
-        if (!(evt.getDamager() instanceof Player) || !(evt.getEntity() instanceof Player)) {
+        if (!(evt.getEntity() instanceof Player)) {
             return;
         }
-        if (Utils.getGamer((Player) evt.getDamager()) == null) {
-            return;
+        boolean isPlayingDamager = Utils.getGamer((Player) evt.getDamager()).playing != null;
+        boolean isPlayingEntity = Utils.getGamer((Player) evt.getEntity()).playing != null;
+
+        if ((isPlayingDamager)) {
+
+            if (Utils.getGamer((Player) evt.getDamager()) == null) {
+                return;
+            }
+            if (Utils.getGamer((Player) evt.getDamager()).playing == null) {
+                return;
+            }
+            if (Utils.getGamer((Player) evt.getEntity()) == null) {
+                return;
+            }
+            if (Utils.getGamer((Player) evt.getEntity()).playing == null) {
+                evt.setCancelled(true);
+            }
+            if (Utils.getGamer((Player) evt.getDamager()).alive != Utils.getGamer((Player) evt.getEntity()).alive) {
+                return;
+            }
+            evt.setCancelled(true);
         }
-        if (Utils.getGamer((Player) evt.getDamager()).playing == null) {
-            return;
-        }
-        if (Utils.getGamer((Player) evt.getEntity()) == null) {
-            return;
-        }
-        if (Utils.getGamer((Player) evt.getEntity()).playing == null) {
-            return;
-        }
-        if (Utils.getGamer((Player) evt.getDamager()).alive != Utils.getGamer((Player) evt.getEntity()).alive) {
-            return;
-        }
-        evt.setCancelled(true);
     }
 
     @EventHandler
@@ -606,23 +612,32 @@ public class Listeners implements Listener {
 
     @EventHandler
     public void onFallDamage(final EntityDamageEvent evt) {
+
+
         if (!(evt.getEntity() instanceof Player)) {
             return;
         }
-        if (evt.getCause() != EntityDamageEvent.DamageCause.FALL && Utils.getGamer((Player) evt.getEntity()).gameStarted) {
-            return;
-        }
-        if (Utils.getGamer((Player) evt.getEntity()) == null) {
-            return;
-        }
-        if (Utils.getGamer((Player) evt.getEntity()).playing == null && Utils.getGamer((Player) evt.getEntity()).gameStarted) {
-            return;
-        }
-        if (Utils.getGamer((Player) evt.getEntity()).alive && Utils.getGamer((Player) evt.getEntity()).gameStarted) {
+        boolean isPlayingEntity = Utils.getGamer((Player) evt.getEntity()).playing != null;
+        if (isPlayingEntity && (evt.getEntity() instanceof Player)) {
+            if (Utils.getGamer((Player) evt.getEntity()).playing != null) {
+                evt.setCancelled(true);
+                return;
+            }
+            if (evt.getCause() != EntityDamageEvent.DamageCause.FALL && Utils.getGamer((Player) evt.getEntity()).gameStarted) {
+                return;
+            }
+            if (Utils.getGamer((Player) evt.getEntity()) == null) {
+                return;
+            }
+            if (Utils.getGamer((Player) evt.getEntity()).playing == null && Utils.getGamer((Player) evt.getEntity()).gameStarted) {
+                return;
+            }
+            if (Utils.getGamer((Player) evt.getEntity()).alive && Utils.getGamer((Player) evt.getEntity()).gameStarted) {
 
-            return;
+                return;
+            }
+            evt.setCancelled(true);
         }
-        evt.setCancelled(true);
     }
     @EventHandler
     public void onEntityTarget(EntityTargetEvent event) {
